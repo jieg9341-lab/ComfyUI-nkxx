@@ -1,0 +1,330 @@
+{
+  "id": "94ddbb57-a3fe-4241-bc23-cbf8b242db4e",
+  "revision": 0,
+  "last_node_id": 14,
+  "last_link_id": 11,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "SaveVideo",
+      "pos": [
+        56.50161225568104,
+        -281.3979604720701
+      ],
+      "size": [
+        438.3996000000002,
+        387.18946851568785
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 9
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "easy showAnything",
+      "pos": [
+        -285.6107931714328,
+        -288.88290058184344
+      ],
+      "size": [
+        227.44999999999993,
+        88
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "https://file4.grsai.com/file/9da3883362e14c599f9a9ca613a29da3.mp4"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "Fast Groups Muter (rgthree)",
+      "pos": [
+        -1075.4437772569938,
+        -252.06763301114148
+      ],
+      "size": [
+        210,
+        106
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "default"
+      }
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        -1391.4235960429216,
+        -101.3876220943768
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "1600积分1个视频，也就是0.08至0.16一个视频\n10s和15s视频价格一样"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 14,
+      "type": "LoadImage",
+      "pos": [
+        -713.8899306951151,
+        -322.0514397541033
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "f9c605f497496c888a18b56da4ffc00a0f925a2c311b8d05785e6bef3f75b391.png",
+        "image"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        -695.805532319031,
+        42.5148358677157
+      ],
+      "size": [
+        242.3675000000003,
+        191.87850000000003
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "状态: 成功\n任务ID: 4608e478-8d32-405e-8c96-092882e7ada8\n视频已下载\n剩余积分: 50358"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Sora2Generator_Grsai",
+      "pos": [
+        -377.12809869511494,
+        -153.3825602541032
+      ],
+      "size": [
+        400,
+        224
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            9
+          ]
+        },
+        {
+          "name": "video_url",
+          "type": "STRING",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2Generator_Grsai"
+      },
+      "widgets_values": [
+        "吃橙子",
+        "16:9",
+        "10",
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      8,
+      14,
+      0,
+      12,
+      0,
+      "IMAGE"
+    ],
+    [
+      9,
+      12,
+      0,
+      10,
+      0,
+      "VIDEO"
+    ],
+    [
+      10,
+      12,
+      1,
+      4,
+      0,
+      "*"
+    ],
+    [
+      11,
+      12,
+      2,
+      5,
+      0,
+      "*"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "Sora2基础工作流",
+      "bounding": [
+        -795.1618965297222,
+        -378.35709364750505,
+        1317.3560149999998,
+        629.3303199999999
+      ],
+      "color": "#88A",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5644739300537776,
+      "offset": [
+        1510.845397294667,
+        819.8101595871829
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}

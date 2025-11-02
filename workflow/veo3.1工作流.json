@@ -1,0 +1,287 @@
+{
+  "id": "1be34387-0b06-4898-b151-915832e7c392",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 4,
+      "type": "easy showAnything",
+      "pos": [
+        392.2148742675781,
+        55.73999786376953
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "https://file4.grsai.com/file/658a6bf32d8b401d836dee9e59d4a560.mp4"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "LoadImage",
+      "pos": [
+        29.150001525878906,
+        238.85501098632812
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.56",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "pasted/image (4).png",
+        "image"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "Veo3_1Generator",
+      "pos": [
+        390.0649719238281,
+        218.0799560546875
+      ],
+      "size": [
+        279,
+        417.239990234375
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "video_url",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Veo3_1Generator"
+      },
+      "widgets_values": [
+        "",
+        "veo3-fast",
+        "【0-2s】首帧静止：中世纪修士伏案书写，烛光摇曳，羽毛笔沙沙划过羊皮纸，窗外彩窗透入微光，书架与纹章环绕，氛围肃穆而专注。\n\n【3-6s】镜头极缓推近，聚焦笔尖与文字——墨迹在纸上延展，烛火随呼吸轻颤，背景书页微动，仿佛时间凝滞。\n\n【7-8s】画面渐暗，只剩烛光与字迹微亮，最后“沙”一声笔停，卷轴轻合，余韵悠长。",
+        "9:16"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "SaveVideo",
+      "pos": [
+        803.5322875976562,
+        32.36989212036133
+      ],
+      "size": [
+        270,
+        578
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 2
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.56",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        812.8763427734375,
+        680.2720947265625
+      ],
+      "size": [
+        248.24874877929688,
+        140.91683959960938
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "状态: 成功\n任务ID: 8839d5b9-6864-4155-b68e-10136834caf7\n视频已下载\n剩余积分: 89000"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [
+        -276.868896484375,
+        359.3307800292969
+      ],
+      "size": [
+        234.75,
+        173.53804626464836
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "veo3.1和veo3价格一样，\nfast 8000积分\npro 40000积分\n有点贵，酌情使用\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      2,
+      1,
+      0,
+      3,
+      0,
+      "VIDEO"
+    ],
+    [
+      3,
+      1,
+      1,
+      4,
+      0,
+      "*"
+    ],
+    [
+      4,
+      1,
+      2,
+      5,
+      0,
+      "*"
+    ],
+    [
+      5,
+      6,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9090909090909091,
+      "offset": [
+        115.52877496132417,
+        93.08987611131974
+      ]
+    },
+    "frontendVersion": "1.28.5",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

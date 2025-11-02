@@ -1,0 +1,448 @@
+{
+  "id": "f00882cd-6cb8-4498-b89b-395b5486ffc2",
+  "revision": 0,
+  "last_node_id": 34,
+  "last_link_id": 16,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "easy showAnything",
+      "pos": [
+        1328.764681818182,
+        -47.93123140495874
+      ],
+      "size": [
+        210,
+        112.7768595041322
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "任务提交成功!\nID: 81233b4d-776f-42cb-81a4-39f1a5c7e2b0\n请使用 '查询任务状态' 节点刷新。"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "SaveVideo",
+      "pos": [
+        1413.8659776304623,
+        313.8430623377415
+      ],
+      "size": [
+        270,
+        246.5
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 15
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "Sora2GetNextVideo",
+      "pos": [
+        994.8594776304636,
+        319.8325623377416
+      ],
+      "size": [
+        241.3755859375,
+        46
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            15
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2GetNextVideo"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 23,
+      "type": "easy showAnything",
+      "pos": [
+        993.9013776304636,
+        412.27813038774224
+      ],
+      "size": [
+        343.0372054504469,
+        196.66834181408393
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "当前无新完成的任务可供下载。"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "easy showAnything",
+      "pos": [
+        544.4342858442349,
+        406.78759940329434
+      ],
+      "size": [
+        349.62565545044686,
+        224.48624181408394
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "--- 任务队列总览 ---\n[succeeded] 81233b4d... - 林肯生平介绍视频...\n[downloaded] b9d36d37... - 爱因斯坦成就科普...\n[downloaded] bcd1824b... - 爱因斯坦的事迹的纪录片...\n[downloaded] 610225e1... - 孟德尔的事迹的纪录片...\n[downloaded] 20993d7f... - 孟德尔的事迹的纪录片...\n[downloaded] 6577439f... - 拉马努金的事迹的纪录片...\n\n当前剩余积分: 66920"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "LoadImage",
+      "pos": [
+        582.0338742019097,
+        -125.7246685051236
+      ],
+      "size": [
+        210,
+        326
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "f9c605f497496c888a18b56da4ffc00a0f925a2c311b8d05785e6bef3f75b391.png",
+        "image"
+      ]
+    },
+    {
+      "id": 34,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        262.6447165893038,
+        155.3939800984906
+      ],
+      "size": [
+        210,
+        106
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 20,
+      "type": "Sora2QueryTasks",
+      "pos": [
+        537.0318022490567,
+        306.45228904848574
+      ],
+      "size": [
+        287.3755859375,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2QueryTasks"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 17,
+      "type": "Sora2SubmitAndRecordTask",
+      "pos": [
+        875.5167727019109,
+        -74.51813400512344
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2SubmitAndRecordTask"
+      },
+      "widgets_values": [
+        "林肯生平介绍视频",
+        "16:9",
+        "10",
+        ""
+      ]
+    },
+    {
+      "id": 15,
+      "type": "Note",
+      "pos": [
+        1610.271554244048,
+        -6.027512600319337
+      ],
+      "size": [
+        338.0827134939185,
+        160.94242027229092
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "异步进行任务，不用再等一个任务完成再进行下一个了\n想提交几个都行\n因为会自动把任务Id写入json文件供后面的节点查询和获取视频结果\n\n记得通过开关一次只启用一个组，不然会几个组同时运行\n\n查询节点中可以看任务运行状态，如果状态变成succeed说明可以下载了，这时候再去运行获取视频那个组，不然运行也不会有视频\n获取视频的节点运行一次就获取一个视频\n\n如果出现视频下载失败的情况，可以去api后台日志里面拿视频，只要生成成功就会有视频链接的\n\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      11,
+      17,
+      0,
+      7,
+      0,
+      "*"
+    ],
+    [
+      14,
+      20,
+      0,
+      10,
+      0,
+      "*"
+    ],
+    [
+      15,
+      21,
+      0,
+      22,
+      0,
+      "VIDEO"
+    ],
+    [
+      16,
+      21,
+      1,
+      23,
+      0,
+      "*"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "提交任务",
+      "bounding": [
+        518.6453110002434,
+        -201.88610145606023,
+        1052.9286363636368,
+        406.2531818181818
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "查询状态",
+      "bounding": [
+        519.8051746366069,
+        228.0243530893937,
+        424.4973666280998,
+        415.89169777272707
+      ],
+      "color": "#A88",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "获取视频（一次获取一个）",
+      "bounding": [
+        968.239477630463,
+        231.98656233774182,
+        880.1333500000002,
+        412.7219500000001
+      ],
+      "color": "#8A8",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7513148009015777,
+      "offset": [
+        -149.60411205542087,
+        325.63675804512627
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}
