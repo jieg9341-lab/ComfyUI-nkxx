@@ -1,0 +1,407 @@
+{
+  "id": "4b29f79d-e9af-49bc-a9eb-29b9461ff912",
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 10,
+  "nodes": [
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        603.6413225,
+        218.89523500000018
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "任务提交成功 | 任务4 | 子任务数: 1 | 积分: 29994"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        85.74317249999976,
+        507.02702949999957
+      ],
+      "size": [
+        270,
+        314.00000000000006
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            9
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "-我叫夯大力，我宣布我今天是甜妹-小团团05-22.webp",
+        "image"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LoadImage",
+      "pos": [
+        435.5846039999997,
+        507.3375760000005
+      ],
+      "size": [
+        270,
+        314.00000000000006
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_temp_etplp_00004_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "SaveImage",
+      "pos": [
+        1478.1395994999957,
+        473.12165749999946
+      ],
+      "size": [
+        270,
+        270
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "easy showAnything",
+      "pos": [
+        1044.650729149999,
+        664.5150799999997
+      ],
+      "size": [
+        359.3025818181818,
+        156.09294545454554
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "下载成功: 任务4 | 子任务: 1个 | 积分: 29994\n所有任务:\n[downloaded] 任务4 (两人在游泳) - 1个子任务\n[downloaded] 任务3 (两人在逛街) - 1个子任务\n[downloaded] 任务2 (两人是lol游戏中的角色，在推...) - 1个子任务\n[downloaded] 任务1 (动漫画风，两人在原神游戏中打怪) - 1个子任务"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        998.9910701499991,
+        199.12158549999998
+      ],
+      "size": [
+        210,
+        82
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 7,
+      "type": "NanoBananaAsyncQuery",
+      "pos": [
+        1051.7562166499997,
+        503.783322
+      ],
+      "size": [
+        296.52890625,
+        78
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanoBananaAsyncQuery"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 10,
+      "type": "NanoBananaAsyncSubmit",
+      "pos": [
+        99.46502981883776,
+        209.91051704699268
+      ],
+      "size": [
+        400,
+        220
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 9
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 10
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_4",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanoBananaAsyncSubmit"
+      },
+      "widgets_values": [
+        "两人在游泳",
+        1,
+        "16:9",
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      6,
+      7,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ],
+    [
+      7,
+      7,
+      1,
+      8,
+      0,
+      "*"
+    ],
+    [
+      8,
+      10,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      9,
+      2,
+      0,
+      10,
+      0,
+      "IMAGE"
+    ],
+    [
+      10,
+      3,
+      0,
+      10,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "提交",
+      "bounding": [
+        -65.63548185000008,
+        26.938436999999855,
+        1042.6103294999998,
+        844.4285714999997
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "获取结果",
+      "bounding": [
+        997.3011181499984,
+        371.5070514999998,
+        856.5964244999994,
+        501.63151799999986
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.513158118230707,
+      "offset": [
+        241.70823458701233,
+        146.86523366424876
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}

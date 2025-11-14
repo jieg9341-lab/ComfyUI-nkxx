@@ -14,6 +14,10 @@ import numpy as np
 import secrets
 import json
 from datetime import datetime
+import pandas as pd 
+import concurrent.futures 
+import threading 
+from . import get_api_key 
 
 # --- 全局配置 ---
 HOST = "https://grsai.dakka.com.cn"
@@ -27,8 +31,9 @@ ZERO_WIDTH_CHARS = [
     "\u200f",
 ]
 NODE_DIR = os.path.dirname(__file__)
-TASK_FILE = os.path.join(NODE_DIR, "nkxx_task_history.json")
+TASK_FILE = os.path.join(NODE_DIR, "sora2_task_history.json") 
 MAX_COMPLETED_HISTORY = 5 
+task_file_lock = threading.Lock() # 新增: 用于安全写入任务文件
 
 # --- 辅助函数 ---
 def _get_headers(api_key: str) -> dict:
@@ -91,6 +96,12 @@ def _upload_image(api_key: str, image_tensor: torch.Tensor) -> str:
 
 
 def _robust_download_video(video_url: str, output_path: str, max_retries: int = 3, timeout: int = 300):
+    # 自动创建输出目录（如果不存在）
+    output_dir = os.path.dirname(output_path)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"[Sora2 Downloader] 创建输出目录: {output_dir}")
+    
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
     }
@@ -191,13 +202,143 @@ class Sora2SubmitAndRecordTask:
             if submit_data.get("code") != 0: raise Exception(f"API提交失败: {submit_data.get('msg', '未知错误')}")
             task_id = submit_data.get("data", {}).get("id")
             if not task_id: raise Exception("API未能返回有效的任务ID")
-            tasks = _read_tasks()
-            tasks[task_id] = { "prompt": prompt, "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "status": "pending" }
-            trimmed_tasks = _trim_history(tasks)
-            _write_tasks(trimmed_tasks)
+            
+            # 使用锁来确保文件写入安全
+            with task_file_lock:
+                tasks = _read_tasks()
+                tasks[task_id] = { "prompt": prompt, "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "status": "pending" }
+                trimmed_tasks = _trim_history(tasks)
+                _write_tasks(trimmed_tasks)
+                
             return (f"任务提交成功!\nID: {task_id}\n请使用 '查询任务状态' 节点刷新。",)
         except Exception as e:
             return (f"提交失败: {e}",)
+
+
+# --- 节点 1.5: 批量提交任务 ---
+class Sora2SubmitBatchTask:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return { "required": {
+                "file_path": ("STRING", {"default": "", "placeholder": "拖拽 CSV/Excel 文件至此"}),
+                "column_name": ("STRING", {"default": "prompt"}),
+                "aspect_ratio": (["16:9", "9:16"], {"default": "16:9"}),
+                "duration": (["10", "15"], {"default": "10"}),
+                "concurrency": ("INT", {"default": 5, "min": 1, "max": 20, "step": 1}),
+            }, "optional": {
+                "api_key": ("STRING", {"default": "", "multiline": False}),
+                "prompt_prefix": ("STRING", {"multiline": True, "default": ""}),
+                "max_count": ("INT", {"default": 50, "min": 1, "max": 999}),
+                "image": ("IMAGE",), # 单张图片将应用于所有 prompt
+            }
+        }
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("task_ids", "report")
+    FUNCTION = "submit_batch"
+    CATEGORY = "Nkxx/视频/Sora2 Task Manager"
+    
+    @classmethod
+    def IS_CHANGED(cls, **kwargs): return time.time_ns()
+
+    def submit_batch(self, file_path, column_name, aspect_ratio, duration, concurrency, 
+                     api_key="", prompt_prefix="", max_count=50, image=None):
+        
+        final_api_key = get_api_key(api_key)
+        if not final_api_key:
+            return ("", "API Key 不能为空。")
+
+        if not file_path or not os.path.exists(file_path):
+            return ("", "文件路径为空或文件不存在。")
+        
+        try:
+            if file_path.lower().endswith('.csv'): 
+                df = pd.read_csv(file_path, encoding='utf-8')
+            elif file_path.lower().endswith(('.xls', '.xlsx')): 
+                df = pd.read_excel(file_path)
+            else: 
+                return ("", "仅支持 .csv, .xls, .xlsx 文件。")
+        except Exception as e: 
+            return ("", f"读取文件失败: {e}")
+        
+        if column_name not in df.columns: 
+            return ("", f"列 '{column_name}' 不存在。")
+        
+        prompts = [f"{prompt_prefix}{p}" for p in df[column_name].dropna().astype(str).tolist()[:max_count]]
+        if not prompts: 
+            return ("", f"列 '{column_name}' 中未找到有效 prompt。")
+
+        uploaded_image_url = None
+        try:
+            if image is not None:
+                # 上传一次图片，供所有任务使用
+                uploaded_image_url = _upload_image(final_api_key, image[0])
+        except Exception as e:
+            return ("", f"图像上传失败: {e}")
+
+        # 内部函数，用于并发执行
+        def submit_task_internal(prompt):
+            try:
+                final_prompt = f"{prompt.strip()}{secrets.choice(ZERO_WIDTH_CHARS)}"
+                payload = { 
+                    "model": "sora-2", 
+                    "prompt": final_prompt, 
+                    "aspectRatio": aspect_ratio,
+                    "duration": int(duration), 
+                    "size": "small", 
+                    "webHook": "-1" 
+                }
+                if uploaded_image_url:
+                    payload["url"] = uploaded_image_url
+                
+                submit_response = requests.post(f"{HOST}/v1/video/sora-video", headers=_get_headers(final_api_key), json=payload, timeout=60)
+                submit_response.raise_for_status()
+                submit_data = submit_response.json()
+
+                if submit_data.get("code") != 0:
+                    return (prompt, f"API失败: {submit_data.get('msg', '未知错误')}")
+                
+                task_id = submit_data.get("data", {}).get("id")
+                if not task_id:
+                    return (prompt, "API未返回有效ID")
+
+                # 使用锁来安全地写入JSON文件
+                with task_file_lock:
+                    tasks = _read_tasks()
+                    tasks[task_id] = { 
+                        "prompt": prompt, 
+                        "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 
+                        "status": "pending" 
+                    }
+                    trimmed_tasks = _trim_history(tasks)
+                    _write_tasks(trimmed_tasks)
+                
+                return (prompt, task_id)
+            except Exception as e:
+                return (prompt, f"提交异常: {str(e)}")
+
+        all_results = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
+            # executor.map 会保持提交的顺序
+            all_results = list(executor.map(submit_task_internal, prompts))
+
+        success_count = 0
+        fail_count = 0
+        output_lines = []
+
+        for _prompt, result in all_results:
+            # 检查 result 是否是有效的 task_id (通常是较长的字符串) 还是错误消息
+            if "失败" in result or "异常" in result or "错误" in result or "未返回" in result:
+                fail_count += 1
+                output_lines.append(result) # 返回错误信息
+            else:
+                success_count += 1
+                output_lines.append(result) # 返回 task_id
+        
+        report = f"批量提交完成 | 总数: {len(prompts)} | 成功: {success_count} | 失败: {fail_count}"
+        # 按照CSV顺序，每行一个task_id或错误
+        task_ids_string = "\n".join(output_lines)
+        
+        return (task_ids_string, report)
 
 
 # --- 节点 2: 查询任务状态 ---
@@ -244,10 +385,17 @@ class Sora2QueryTasks:
                         updated = True
             except Exception:
                 pass
-        if updated: _write_tasks(tasks)
+        
+        # 在查询后立即写入更新，而不是等到报告生成时
+        if updated: 
+            _write_tasks(tasks)
 
+        # 再次读取，确保报告是最新的，并应用trim
         final_tasks_for_report = _trim_history(_read_tasks())
-        _write_tasks(final_tasks_for_report) 
+        
+        # 写入trim后的结果
+        if updated: # 只有在发生变化时才再次写入（避免查询时无意义的磁盘IO）
+             _write_tasks(final_tasks_for_report) 
         
         full_report_lines = ["--- 任务队列总览 ---"]
         sorted_tasks_report = sorted(final_tasks_for_report.items(), key=lambda item: item[1].get('submitted_at', ''), reverse=True)
@@ -288,7 +436,7 @@ class Sora2GetNextVideo:
         if not video_url:
             tasks[task_to_download_id]['status'] = 'failed'
             _write_tasks(tasks)
-            return (GrsaiVideoAdapter(None), f"错误: 任务 {task_to_download_id[:8]}... 状态成功但无URL。")
+            return (GrsaiVideoAdapter(None), f"错误: TAsks {task_to_download_id[:8]}... 状态成功但无URL。")
 
         try:
             output_dir = folder_paths.get_output_directory()
@@ -315,11 +463,13 @@ class Sora2GetNextVideo:
 # --- 节点注册 ---
 NODE_CLASS_MAPPINGS = {
     "Sora2SubmitAndRecordTask": Sora2SubmitAndRecordTask,
+    "Sora2SubmitBatchTask": Sora2SubmitBatchTask, 
     "Sora2QueryTasks": Sora2QueryTasks,
     "Sora2GetNextVideo": Sora2GetNextVideo,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
     "Sora2SubmitAndRecordTask": "1. Sora2 提交任务 (Grsai)",
+    "Sora2SubmitBatchTask": "1.5. Sora2 批量提交 (CSV/Excel)", 
     "Sora2QueryTasks": "2. Sora2 查询任务状态 (Grsai)",
     "Sora2GetNextVideo": "3. Sora2 获取下一个视频 (Grsai)",
 }
