@@ -1,4 +1,4 @@
-# ComfyUI-Nkxx Custom Nodes
+# ComfyUI-nkxx Custom Nodes
 
 这是一个功能强大的 ComfyUI 自定义节点包，集成了 **GRSAI** 的多种服务。
 
@@ -17,7 +17,7 @@
 * **🍌 Nano Banana 图像生成**
     * 支持 **同步 (Sync)** 与 **异步 (Async)** 两种模式。
     * **超强批量处理**：支持读取 CSV/Excel 文件批量生成，支持文件夹内图片遍历处理。
-    * **Pro 模型支持**：支持 2K/4K 高清分辨率，单次并发可达 14 张图。
+    * **Pro 模型支持**：支持 2K/4K 高清分辨率，最大可用 14 张参考图。
     * **智能熔断**：内置积分保护和错误重试机制。
 * **🤖 Grsai GPT Image (Sora-Image)**
     * 基于 `sora-image` 模型的新一代图像生成。
@@ -68,45 +68,6 @@
     YOUR_DEFAULT_API_KEY = "sk-xxxxxxxxxxxxxxxxxxxxxxxx"
     ```
 3.  **环境变量**：设置系统环境变量 `GRSAI_KEY`。
-
----
-
-## 📦 节点详解 (Nodes Description)
-
-### 1. 🖼️ 图像生成 (Image Generation)
-
-| 节点名称 | 功能描述 |
-| :--- | :--- |
-| **Grsai Nano Banana** | 基础生图，支持 1-8 张并发，适用于快速测试。 |
-| **Grsai Nano Banana Pro** | 专业版，支持 **2K/4K** 分辨率，最大支持 14 张并发。 |
-| **Grsai Nano Banana Batch** | **批量神器**。读取 CSV/Excel 中的 Prompt 列，自动批量跑图。 |
-| **Grsai GPT Image (Sora-Image)** | **[NEW]** 基于 Sora-Image 模型，支持 **5张参考图** 输入，支持设置生成变体数与并发数。 |
-| **Grsai 文件夹批量处理** | 读取文件夹内的图片 + CSV 提示词，进行批量图生图/重绘操作，含熔断保护。 |
-
-### 2. 🎬 Sora-2 (视频生成)
-
-| 节点名称 | 功能描述 |
-| :--- | :--- |
-| **Sora2 Generator** | 标准生成节点，支持文生、图生、设置时长和比例。 |
-| **Sora2 异步提交/批量提交** | 发送视频任务到云端队列，支持 CSV 批量提交视频任务。 |
-| **Sora2 查询与下载** | 轮询云端任务状态，自动下载完成的视频 (支持断点续传/重试)。 |
-| **Sora2 上传/PID 创建角色** | 用于保持角色一致性。上传本地视频或引用现有 PID 注册角色。<br>📝 **注意**：创建成功的角色ID和备注会自动追加写入到插件同级目录下的 `character_library.txt` 文件中。 |
-
-### 3. 🎥 Veo 3.1 (视频生成)
-
-| 节点名称 | 功能描述 |
-| :--- | :--- |
-| **Veo3.1 参考图生成** | 支持上传最多 3 张参考图来控制视频内容。 |
-| **Veo3.1 首尾帧生成** | 支持指定视频的起始帧和结束帧，精准控制视频动态。 |
-
-### 4. 🧠 LLM / 工具 (语言模型与辅助)
-
-| 节点名称 | 功能描述 |
-| :--- | :--- |
-| **Grsai LLM (文本对话)** | 调用 Gemini 模型进行对话。 |
-| **Grsai VLM (图文对话)** | 上传图片给 Gemini，让 AI 描述或分析图片内容。 |
-| **Grsai LLM Writer** | 专门用于辅助写作，可批量生成 Prompt 并保存为 CSV 供绘画节点使用。 |
-| **Save Image By Filename** | 智能保存节点，支持自定义文件名和目录结构。 |
 
 ---
 
