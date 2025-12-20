@@ -7,17 +7,18 @@ from PIL import Image
 from io import BytesIO
 import secrets
 import time
+from . import get_api_key
 
 # ============= 配置 =============
-API_BASE_URL = "https://api.grsai.com/v1/chat/completions"
+API_BASE_URL = "https://grsai.dakka.com.cn/v1/chat/completions"
 
 SUPPORTED_MODELS = [
-    "gemini-2.5-pro",
+    "gemini-3-pro",
     "gemini-2.5-flash",
     "gemini-2.5-flash-lite"
 ]
 
-SYMBOLS = "▲★◆●■▶◀▼◇○◎⊕⊗☆♠♥♦♣♪♫☀☁☂☃☄☇☈☉☊☋✓✔✕✖✗✘☛☞☚☜☝☟☠☡☢☣"
+ZERO_WIDTH_CHARS = ["\u200b", "\u200c", "\u200d", "\ufeff", "\u180e", "\u200e", "\u200f"]
 
 # ============= 工具函数 =============
 
@@ -53,8 +54,12 @@ def call_grsai_api(api_key, model, messages):
         if response.status_code != 200:
             return None, f"HTTP {response.status_code}: {response.text}"
         result = response.json()
-        message = result["choices"][0]["message"]["content"]
-        return message.strip(), None
+        if "choices" in result and len(result["choices"]) > 0:
+            message = result["choices"][0]["message"]["content"]
+            return message.strip(), None
+        else:
+            return None, f"API 返回格式异常: {result}"
+            
     except requests.exceptions.Timeout:
         return None, "请求超时，请检查网络或重试"
     except requests.exceptions.RequestException as e:
@@ -62,7 +67,7 @@ def call_grsai_api(api_key, model, messages):
     except Exception as e:
         return None, f"未知错误: {str(e)}"
 
-# ============= LLM 节点 =============
+# ============= LLM 节点 (纯文本) =============
 
 class GRSAILLMNode:
     @classmethod
@@ -70,8 +75,7 @@ class GRSAILLMNode:
         return {
             "required": {
                 "model": (SUPPORTED_MODELS, {"default": "gemini-2.5-flash"}),
-                "system_prompt": ("STRING", {"default": "You are a helpful assistant.", "multiline": True}),
-                "user_prompt": ("STRING", {"default": "Hello!", "multiline": True}),
+                "prompt": ("STRING", {"default": "Hello! You are a helpful assistant.", "multiline": True}),
                 "random_mode": (["固定", "随机"], {"default": "固定"}),
             },
             "optional": {
@@ -84,19 +88,21 @@ class GRSAILLMNode:
     FUNCTION = "generate"
     CATEGORY = "Nkxx/语言模型"
 
-    def generate(self, model, system_prompt, user_prompt, random_mode, api_key=""):
+    def generate(self, model, prompt, random_mode, api_key=""):
         final_api_key = get_api_key(api_key)
         if not final_api_key:
             return (None, "API Key 不能为空。请在节点中填写，或在 __init__.py 文件中设置。")
         
-        final_prompt = user_prompt.strip()
+        final_prompt = prompt.strip()
+        
+        # 随机模式下附加零宽字符
         if random_mode == "随机":
-            final_prompt = f"{final_prompt}\u200b{secrets.choice(SYMBOLS)}"
+            final_prompt = f"{final_prompt}{secrets.choice(ZERO_WIDTH_CHARS)}"
 
         messages = [
-            {"role": "system", "content": system_prompt.strip()},
             {"role": "user", "content": final_prompt}
         ]
+        
         response, error = call_grsai_api(final_api_key, model, messages)
         return (response, error)
 
@@ -106,19 +112,24 @@ class GRSAILLMNode:
             return time.time_ns()
         return False
 
-# ============= VLM 节点 =============
+# ============= VLM 节点 (图文/纯文兼容) =============
 
 class GRSAIVLMNode:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model": (SUPPORTED_MODELS, {"default": "gemini-2.5-pro"}),
-                "image": ("IMAGE",),
-                "prompt": ("STRING", {"default": "Describe this image.", "multiline": True}),
+                "model": (SUPPORTED_MODELS, {"default": "gemini-3-pro"}),
+                "prompt": ("STRING", {"default": "Describe these images.", "multiline": True}),
                 "random_mode": (["固定", "随机"], {"default": "固定"}),
             },
             "optional": {
+                "image_1": ("IMAGE",),
+                "image_2": ("IMAGE",),
+                "image_3": ("IMAGE",),
+                "image_4": ("IMAGE",),
+                "image_5": ("IMAGE",),
+                "image_6": ("IMAGE",),
                 "api_key": ("STRING", {"default": "", "multiline": False, "placeholder": "留空则使用 __init__.py 中的配置"}),
             }
         }
@@ -128,26 +139,48 @@ class GRSAIVLMNode:
     FUNCTION = "generate_with_image"
     CATEGORY = "Nkxx/语言模型"
 
-    def generate_with_image(self, model, image, prompt, random_mode, api_key=""):
+    def generate_with_image(self, model, prompt, random_mode, image_1=None, image_2=None, image_3=None, image_4=None, image_5=None, image_6=None, api_key=""):
         final_api_key = get_api_key(api_key)
         if not final_api_key:
             return (None, "API Key 不能为空。请在节点中填写，或在 __init__.py 文件中设置。")
 
         final_prompt = prompt.strip()
+        
         if random_mode == "随机":
-            final_prompt = f"{final_prompt}\u200b{secrets.choice(SYMBOLS)}"
+            final_prompt = f"{final_prompt}{secrets.choice(ZERO_WIDTH_CHARS)}"
 
-        img_base64 = pil2base64(tensor2pil(image))
-        if img_base64 is None:
-            return (None, "图像处理失败")
+        # 收集所有非空的图片输入
+        potential_images = [image_1, image_2, image_3, image_4, image_5, image_6]
+        valid_images = [img for img in potential_images if img is not None]
 
-        messages = [{
-            "role": "user",
-            "content": [
-                {"type": "text", "text": final_prompt},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_base64}"}}
-            ]
-        }]
+        messages = []
+
+        # === 纯文本模式 (无图片输入) ===
+        if not valid_images:
+            messages = [{"role": "user", "content": final_prompt}]
+        
+        # === 多模态模式 (有图片输入) ===
+        else:
+            content_list = [{"type": "text", "text": final_prompt}]
+            processed_count = 0
+            
+            for i, img_tensor in enumerate(valid_images):
+                try:
+                    img_base64 = pil2base64(tensor2pil(img_tensor))
+                    if img_base64:
+                        content_list.append({
+                            "type": "image_url", 
+                            "image_url": {"url": f"data:image/jpeg;base64,{img_base64}"}
+                        })
+                        processed_count += 1
+                except Exception as e:
+                    print(f"[VLMAPI] 处理图片时出错: {e}")
+
+            if processed_count == 0:
+                return (None, "图片输入已连接但处理失败")
+
+            messages = [{"role": "user", "content": content_list}]
+        
         response, error = call_grsai_api(final_api_key, model, messages)
         return (response, error)
 

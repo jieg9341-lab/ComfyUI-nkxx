@@ -1,0 +1,875 @@
+{
+  "id": "4b29f79d-e9af-49bc-a9eb-29b9461ff912",
+  "revision": 0,
+  "last_node_id": 19,
+  "last_link_id": 25,
+  "nodes": [
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        -141.00999374405393,
+        893.6357454979529
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "任务提交成功 | 任务2 | 模型: nano-banana-pro | 子任务数: 1 | 积分: 90401"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "LoadImage",
+      "pos": [
+        965.0932849149341,
+        810.9991119784006
+      ],
+      "size": [
+        270,
+        314.0000000000001
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "-我叫夯大力，我宣布我今天是甜妹-小团团05-22.webp",
+        "image"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "easy showAnything",
+      "pos": [
+        1765.2751784149273,
+        1251.2320204784016
+      ],
+      "size": [
+        302.98361199999977,
+        88
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "批量提交完成 | 批量任务2 | 成功提交: 2/2 | 积分: 92201"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "easy showAnything",
+      "pos": [
+        1503.8088799149293,
+        1254.3725149784013
+      ],
+      "size": [
+        221.19099999999992,
+        95.29949999999985
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "成功生成 2 条记录并写入: generated_prompts.csv"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "GrsaiLLMWriter",
+      "pos": [
+        1262.156754914931,
+        822.8431969784001
+      ],
+      "size": [
+        400,
+        278
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "main_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "main_prompt"
+          },
+          "link": 17
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "file_path",
+          "type": "STRING",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrsaiLLMWriter"
+      },
+      "widgets_values": [
+        "gemini-2.5-flash",
+        "",
+        "You are a helpful assistant.",
+        "generated_prompts.csv",
+        "prompt",
+        ""
+      ]
+    },
+    {
+      "id": 12,
+      "type": "NanoBananaAsyncBatchSubmit",
+      "pos": [
+        1688.0868463754286,
+        819.1068677443997
+      ],
+      "size": [
+        400,
+        316
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 12
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_4",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "file_path",
+          "type": "STRING",
+          "widget": {
+            "name": "file_path"
+          },
+          "link": 13
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanoBananaAsyncBatchSubmit"
+      },
+      "widgets_values": [
+        "",
+        "prompt",
+        "",
+        "nano-banana-fast",
+        "默认",
+        "auto",
+        1,
+        ""
+      ]
+    },
+    {
+      "id": 7,
+      "type": "NanoBananaAsyncQuery",
+      "pos": [
+        168.01774106261425,
+        1096.908016422699
+      ],
+      "size": [
+        296.52890625,
+        78
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanoBananaAsyncQuery"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 8,
+      "type": "easy showAnything",
+      "pos": [
+        164.78072274026363,
+        1233.3918875473996
+      ],
+      "size": [
+        359.3025818181818,
+        156.09294545454554
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "[RUNNING] 任务2 (特写，楚楚可怜的表情) - 1个子任务\n[DOWNLOADED] 批量任务2 - 进度: 2/2\n[DOWNLOADED] 批量任务1 - 进度: 2/2\n[DOWNLOADED] 任务1 (特写) - 1个子任务"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "SaveImage",
+      "pos": [
+        549.2926633720614,
+        1094.8070154744494
+      ],
+      "size": [
+        270,
+        270.0000000000001
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LoadImage",
+      "pos": [
+        -228.66699174405505,
+        1103.3880354979556
+      ],
+      "size": [
+        270,
+        314.0000000000001
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            11
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "火灵儿1.jpg",
+        "image"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "Text Multiline",
+      "pos": [
+        1020.8169309149317,
+        1200.3399044784016
+      ],
+      "size": [
+        421.99151404999986,
+        274.5344028000002
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "字符串",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "was-ns",
+        "ver": "3.0.0",
+        "Node name for S&R": "Text Multiline"
+      },
+      "widgets_values": [
+        "# 任务：将文本列表转换为JSON数组\n\n## 1. 你的角色\n你是一个精确的数据格式化工具。\n\n## 2. 你的指令\n仔细阅读下面用三重反引号（```）包裹的文本内容。你的**唯一任务**是：\n- 将文本中的**每一行**都视为一个独立的字符串。\n- 将这些字符串汇总成一个标准的JSON数组。\n- **绝对不要**修改、翻译、解释或删除原文的任何内容。保持原样。\n\n## 3. 输出格式要求 (最关键)\n- 必须以一个JSON数组的格式返回结果。\n- 严禁在JSON数组之外添加任何说明、标题或解释性文字。\n\n## 4. 在下方粘贴你的提示词列表（每行一条）\n```\n表情改成悲伤，面部特写\n表情改成苦涩，面部特写\n```"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "NanoBananaAsyncSubmit",
+      "pos": [
+        -682.1566854752178,
+        826.7226965449461
+      ],
+      "size": [
+        400,
+        468
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 11
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_4",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_5",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_6",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_7",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_8",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_9",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_10",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_11",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_12",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_13",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_14",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanoBananaAsyncSubmit"
+      },
+      "widgets_values": [
+        "特写，楚楚可怜的表情",
+        "nano-banana-pro",
+        "默认",
+        1,
+        "1:1",
+        ""
+      ]
+    },
+    {
+      "id": 19,
+      "type": "easy string",
+      "pos": [
+        432.56748853293664,
+        879.0718509717383
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "字符串",
+          "name": "string",
+          "type": "STRING",
+          "links": [
+            21,
+            22,
+            23,
+            25
+          ]
+        }
+      ],
+      "title": "apikey",
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy string"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 9,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        145.4326162563048,
+        818.6839361769945
+      ],
+      "size": [
+        253.84613474999992,
+        122.20513159999996
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "切换开关",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    }
+  ],
+  "links": [
+    [
+      6,
+      7,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ],
+    [
+      7,
+      7,
+      1,
+      8,
+      0,
+      "*"
+    ],
+    [
+      8,
+      10,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      11,
+      3,
+      0,
+      10,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      14,
+      0,
+      12,
+      0,
+      "IMAGE"
+    ],
+    [
+      13,
+      13,
+      0,
+      12,
+      4,
+      "STRING"
+    ],
+    [
+      14,
+      13,
+      1,
+      15,
+      0,
+      "*"
+    ],
+    [
+      15,
+      12,
+      0,
+      16,
+      0,
+      "*"
+    ],
+    [
+      17,
+      17,
+      0,
+      13,
+      3,
+      "STRING"
+    ],
+    [
+      21,
+      19,
+      0,
+      10,
+      14,
+      "STRING"
+    ],
+    [
+      22,
+      19,
+      0,
+      13,
+      4,
+      "STRING"
+    ],
+    [
+      23,
+      19,
+      0,
+      12,
+      5,
+      "STRING"
+    ],
+    [
+      25,
+      19,
+      0,
+      7,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "提交",
+      "bounding": [
+        -774.8555780940557,
+        732.2786374979528,
+        882.0988503499998,
+        812.3069495499997
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "异步批量提交",
+      "bounding": [
+        942.8553347629337,
+        729.8755417088995,
+        1158.0783048092806,
+        814.7066094500003
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "查询或下载结果",
+      "bounding": [
+        129.34310035980891,
+        995.6762206578135,
+        792.6662798491002,
+        549.7233492691853
+      ],
+      "color": "#8AA",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9090909090909103,
+      "offset": [
+        219.63105981816614,
+        -859.5924503481695
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}

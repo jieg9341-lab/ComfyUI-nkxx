@@ -12,7 +12,7 @@ import tempfile
 from PIL import Image
 import torch
 import numpy as np
-import secrets # 导入secrets模块
+import secrets 
 
 # --- 辅助工具 ---
 
@@ -162,7 +162,10 @@ def _execute_veo_task(api_key, payload):
             status_data = status_response.json()
             
             if status_data.get("code") != 0:
-                raise Exception(f"轮询失败: {status_data.get('msg', f'错误码: {status_data.get("code")}')}")
+                err_msg = status_data.get('msg')
+                err_code = status_data.get('code')
+                final_err_msg = err_msg if err_msg else f"错误码: {err_code}"
+                raise Exception(f"轮询失败: {final_err_msg}")
             
             task_info = status_data.get("data", {})
             if not task_info:
@@ -240,14 +243,9 @@ class Veo3_1_RefGenerator:
         return {
             "required": {
                 "api_key": ("STRING", {"default": "", "multiline": False, "tooltips": "请输入您的API密钥"}),
-                
-                # --- (*** 这是修改部分 ***) ---
-                # 根据API文档, 'urls' 仅支持 veo3.1-fast
                 "model": (["veo3.1-fast"], {"default": "veo3.1-fast"}),
                 "prompt": ("STRING", {"default": "A cute cat playing on the grass", "multiline": True, "tooltips": "提示词，只支持英文"}),
-                # 根据API文档, 'urls' 仅支持 16:9
                 "aspect_ratio": (["16:9"], {"default": "16:9"}),
-                # --- (*** 修改结束 ***) ---
             },
             "optional": {
                 "ref_image_1": ("IMAGE",),
@@ -274,9 +272,6 @@ class Veo3_1_RefGenerator:
         try:
             print("[Veo3.1-Ref] 检查并上传参考图像...")
             
-            # --- (*** 这是修改部分 ***) ---
-            
-            # 1. 创建一个列表来存储所有有效的URL
             ref_urls = []
 
             if ref_image_1 is not None:
@@ -300,13 +295,9 @@ class Veo3_1_RefGenerator:
                 "webHook": "-1"
             }
             
-            # 2. 根据API文档, 使用 'urls' 键, 并且值为一个列表
-            if ref_urls: # 仅当列表不为空时才添加
+            if ref_urls:
                 payload["urls"] = ref_urls
             
-            # --- (*** 修改结束 ***) ---
-            
-            # 调用通用执行器
             return _execute_veo_task(api_key, payload)
 
         except Exception as e:
@@ -319,8 +310,7 @@ class Veo3_1_RefGenerator:
 # --- 节点二: 首尾帧生成 ---
 class Veo3_1_FramesGenerator:
     """
-    veo3.1首尾帧(grsai) - 支持首帧和尾帧
-    (此节点根据API文档是正确的，无需修改)
+    veo3.1首尾帧(grsai) - 支持首帧，或首帧+尾帧，不支持单独尾帧
     """
     @classmethod
     def INPUT_TYPES(cls):
@@ -330,7 +320,6 @@ class Veo3_1_FramesGenerator:
                 # 'lastFrameUrl' 支持 'veo3.1-fast', 'veo3.1-pro'
                 "model": (["veo3.1-fast", "veo3.1-pro"], {"default": "veo3.1-fast"}),
                 "prompt": ("STRING", {"default": "A cute cat playing on the grass", "multiline": True, "tooltips": "提示词，只支持英文"}),
-                # 文档未限制首尾帧的宽高比, 保留两者
                 "aspect_ratio": (["16:9", "9:16"], {"default": "16:9"}),
             },
             "optional": {
@@ -366,11 +355,11 @@ class Veo3_1_FramesGenerator:
                 print("[Veo3.1-Frames] 上传尾帧...")
                 last_frame_url = _upload_image(api_key, last_frame[0])
             
-            # API文档说: lastFrameUrl 需搭配 firstFrameUrl 使用
+            # --- 校验逻辑: 允许单独首帧，禁止单独尾帧 ---
             if last_frame_url and not first_frame_url:
-                raise Exception("API错误: 提供了尾帧(lastFrameUrl)但未提供首帧(firstFrameUrl)。")
-
-            print("[Veo3.1-Frames] 图像上传完成。")
+                raise Exception("不支持仅使用尾帧生成。若使用尾帧控制，必须同时提供首帧。")
+            
+            print(f"[Veo3.1-Frames] 图像上传完成。使用配置: 首帧={bool(first_frame_url)}, 尾帧={bool(last_frame_url)}")
 
             final_prompt = f"{prompt.strip()}{secrets.choice(ZERO_WIDTH_CHARS)}"
             
@@ -386,7 +375,6 @@ class Veo3_1_FramesGenerator:
             if last_frame_url:
                 payload["lastFrameUrl"] = last_frame_url
             
-            # 调用通用执行器
             return _execute_veo_task(api_key, payload)
 
         except Exception as e:

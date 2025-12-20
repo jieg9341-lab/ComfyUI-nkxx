@@ -1,23 +1,22 @@
+# banana_nodes_async.py
 import torch
 import torch.nn.functional as F
 import os
 import tempfile
 from typing import Any, Dict, Optional, Union, List, Tuple, TYPE_CHECKING
 from PIL import Image
-import pandas as pd
 import requests
-import concurrent.futures
 import json
-import base64
 import numpy as np
 from io import BytesIO
-import time
 import traceback
-import folder_paths # 确保 folder_paths 被导入
+import folder_paths 
 import re
 import threading
 from datetime import datetime
-import secrets # 确保 secrets 被导入
+import secrets 
+import pandas as pd
+import concurrent.futures
 
 from . import get_api_key
 
@@ -56,17 +55,6 @@ def tensor_to_pil(tensor: torch.Tensor) -> List[Image.Image]:
         images.append(Image.fromarray(img_np, 'RGB' if img_np.shape[-1] == 3 else 'RGBA'))
     return images
 
-def pil_to_tensor(pil_images: Union[Image.Image, List[Image.Image]]) -> torch.Tensor:
-    """将PIL图像或列表转换为ComfyUI图像张量"""
-    if not isinstance(pil_images, list): pil_images = [pil_images]
-    tensors = []
-    for pil_image in pil_images:
-        img_array = np.array(pil_image).astype(np.float32) / 255.0
-        tensor = torch.from_numpy(img_array)[None,]
-        tensors.append(tensor)
-    if not tensors: return torch.empty((0, 1, 1, 3), dtype=torch.float32)
-    return torch.cat(tensors, dim=0)
-
 def safe_pil_batch_to_tensor(pil_images: List[Image.Image]) -> torch.Tensor:
     """将PIL图像列表安全地转换为ComfyUI图像张量，自动处理不同尺寸。"""
     if not pil_images:
@@ -79,15 +67,12 @@ def safe_pil_batch_to_tensor(pil_images: List[Image.Image]) -> torch.Tensor:
     for pil_image in pil_images:
         if pil_image is None: continue
         try:
-            # 确保是 RGB
             pil_image = safe_pil_to_rgb(pil_image)
-            
             img_array = np.array(pil_image).astype(np.float32) / 255.0
             
-            # 确保3通道
-            if len(img_array.shape) == 2: # 灰度图
+            if len(img_array.shape) == 2: 
                 img_array = np.stack((img_array,)*3, axis=-1)
-            elif img_array.shape[2] == 4: # RGBA
+            elif img_array.shape[2] == 4: 
                 img_array = img_array[:,:,:3]
 
             tensor = torch.from_numpy(img_array)[None,]
@@ -103,11 +88,8 @@ def safe_pil_batch_to_tensor(pil_images: List[Image.Image]) -> torch.Tensor:
     padded_tensors = []
     for tensor in tensors:
         b, h, w, c = tensor.shape
-        
         if h == 0 or w == 0 or c != 3:
-            print(f"Warning: 跳过无效尺寸的张量: shape {tensor.shape}")
             continue
-            
         if h == max_h and w == max_w:
             padded_tensors.append(tensor)
             continue
@@ -116,13 +98,11 @@ def safe_pil_batch_to_tensor(pil_images: List[Image.Image]) -> torch.Tensor:
         pad_w = max_w - w
         pad_h = max_h - h
         padding = (0, pad_w, 0, pad_h) 
-        
         padded_tensor_chw = F.pad(tensor_chw, padding, "constant", 0)
         padded_tensor_hwc = padded_tensor_chw.permute(0, 2, 3, 1)
         padded_tensors.append(padded_tensor_hwc)
 
     if not padded_tensors:
-         print("Warning: 填充后没有有效的张量。")
          return torch.empty((0, 1, 1, 3), dtype=torch.float32)
 
     try:
@@ -133,17 +113,7 @@ def safe_pil_batch_to_tensor(pil_images: List[Image.Image]) -> torch.Tensor:
         return padded_tensors[0]
 
 def format_error_message(error: Exception) -> str:
-    """格式化错误消息"""
     return f"{type(error).__name__}: {str(error)}"
-
-def sanitize_filename(text: str, max_length: int = 100) -> str:
-    """清理字符串，使其成为有效的文件名。"""
-    sanitized = re.sub(r'[\\/*?:"<>|]', '_', text)
-    sanitized = re.sub(r'[\s_]+', '_', sanitized)
-    sanitized = sanitized.strip('_')
-    if len(sanitized) > max_length:
-        sanitized = sanitized[:max_length]
-    return sanitized
 
 # --- 上传功能 ---
 def get_upload_token_zh(api_key: str, data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -154,7 +124,6 @@ def get_upload_token_zh(api_key: str, data: Optional[Dict[str, Any]] = None) -> 
     return response.json()
 
 def upload_file_zh(file_path: str, api_key: str) -> str:
-    """上传文件并返回URL，接收api_key参数"""
     if not file_path or not api_key: 
         return ""
     if not os.path.exists(file_path): 
@@ -181,23 +150,16 @@ def upload_file_zh(file_path: str, api_key: str) -> str:
     return f"{domain}/{key}"
 
 def upload_image_tensor(image_tensor: torch.Tensor, api_key: str, index: int) -> Optional[str]:
-    """上传单个图像张量并返回URL"""
     try:
         pil_image = tensor_to_pil(image_tensor)[0]
         rgb_pil = safe_pil_to_rgb(pil_image)
         with tempfile.NamedTemporaryFile(suffix=f"_{index}.png", delete=False) as temp_file:
             rgb_pil.save(temp_file, "PNG")
             temp_path = temp_file.name
-        
-        # 上传并获取URL
         image_url = upload_file_zh(temp_path, api_key)
-        
-        # 清理临时文件
         if os.path.exists(temp_path):
             os.unlink(temp_path)
-            
         return image_url if image_url else None
-        
     except Exception as e:
         print(f"图像上传失败: {e}")
         return None
@@ -215,7 +177,6 @@ class GrsaiAPI:
     def _make_request(self, method: str, endpoint: str, data: Optional[Dict] = None, timeout: int = 300) -> Dict[str, Any]:
         url = f"https://grsai.dakka.com.cn{endpoint}"
         response = self.session.request(method, url, json=data, timeout=timeout)
-        # *** 修复: 笔误 _response -> response ***
         response.raise_for_status()
         text = response.text
         json_data = text[6:] if text.startswith("data: ") else text
@@ -223,6 +184,8 @@ class GrsaiAPI:
 
 # --- 配置 ---
 SUPPORTED_ASPECT_RATIOS = ["auto", "1:1", "16:9", "9:16", "4:3", "3:4", "3:2", "2:3", "5:4", "4:5", "21:9"]
+# 模型列表常量
+SUPPORTED_MODELS_ASYNC = ["nano-banana-fast", "nano-banana-pro", "nano-banana-pro-vt"]
 
 # --- 节点基类 ---
 class _GrsaiNodeBase:
@@ -234,7 +197,6 @@ class _GrsaiNodeBase:
         print(f"节点执行错误: {error_message}")
         if is_text_output:
             return {"ui": {"string": [error_message]}, "result": (None, error_message)}
-        
         image_out = torch.zeros((1, 1, 1, 3), dtype=torch.float32)
         return {"ui": {"string": [error_message]}, "result": (image_out, f"失败: {error_message}")}
 
@@ -251,58 +213,33 @@ class _GrsaiNodeBase:
         return -1
         
     def _handle_image_uploads(self, images_in: List[Optional[torch.Tensor]], api_key: str):
-        """处理图像上传，返回有效的URL列表"""
         uploaded_urls = []
         if not any(img is not None for img in images_in): 
             return uploaded_urls
-        
         try:
-            # *** 关键修复：移除并发，使用普通循环 ***
-            # 避免 ThreadPoolExecutor 导致的死锁
             for i, image_tensor in enumerate(images_in):
-                if image_tensor is None: 
-                    continue
-                
-                # 上传图像并获取URL
+                if image_tensor is None: continue
                 image_url = upload_image_tensor(image_tensor, api_key, i)
                 if image_url:
                     uploaded_urls.append(image_url)
-            
             return uploaded_urls
-            
         except Exception as e:
             raise Exception(f"图像上传失败: {format_error_message(e)}")
 
-    def _cleanup_temp_files(self, temp_files: List[str]):
-        for path in temp_files:
-            if os.path.exists(path): os.unlink(path)
-
     def _make_api_request_with_error_handling(self, api_client, endpoint, payload):
-        """封装 API 请求，提供更详细的错误信息"""
         try:
             response = api_client._make_request("POST", endpoint, data=payload)
-            
-            if response is None:
-                raise GrsaiAPIError("API 返回了空响应 (None)")
-            
-            if not isinstance(response, dict):
-                raise GrsaiAPIError(f"API 返回了无效的数据类型: {type(response)}, 内容: {response}")
-            
+            if response is None: raise GrsaiAPIError("API 返回了空响应 (None)")
+            if not isinstance(response, dict): raise GrsaiAPIError(f"API 返回了无效的数据类型: {type(response)}")
             code = response.get("code")
             if code is not None and code != 0:
                 msg = response.get("msg", "未知错误")
                 raise GrsaiAPIError(f"API 错误码 {code}: {msg}")
-            
             data = response.get("data")
-            if data is None:
-                raise GrsaiAPIError(f"API 响应中没有 'data' 字段。完整响应: {response}")
-            
+            if data is None: raise GrsaiAPIError(f"API 响应中没有 'data' 字段")
             task_id = data.get("id")
-            if not task_id:
-                raise GrsaiAPIError(f"API 未返回有效的任务ID。data 内容: {data}")
-            
+            if not task_id: raise GrsaiAPIError(f"API 未返回有效的任务ID")
             return response
-            
         except requests.exceptions.RequestException as e:
             raise GrsaiAPIError(f"网络请求失败: {str(e)}")
         except json.JSONDecodeError as e:
@@ -312,17 +249,12 @@ class _GrsaiNodeBase:
 
 # --- 异步任务管理 ---
 BANANA_TASK_FILE = os.path.join(folder_paths.get_temp_directory(), "banana_task_history.json")
-MAX_BANANA_HISTORY_DOWNLOADED = 5 # 最多保留5条 'downloaded' 记录
+MAX_BANANA_HISTORY_DOWNLOADED = 5
 banana_task_lock = threading.Lock()
 
-# 零宽字符，确保并发提交时 prompt 唯一
-ZERO_WIDTH_CHARS = [
-    "\u200b", "\u200c", "\u200d", "\ufeff",
-    "\u180e", "\u200e", "\u200f",
-]
+ZERO_WIDTH_CHARS = ["\u200b", "\u200c", "\u200d", "\ufeff", "\u180e", "\u200e", "\u200f"]
 
 def _read_banana_tasks():
-    """读取任务历史文件"""
     if not os.path.exists(BANANA_TASK_FILE): return {}
     try:
         with open(BANANA_TASK_FILE, 'r', encoding='utf-8') as f:
@@ -332,42 +264,47 @@ def _read_banana_tasks():
         return {}
 
 def _write_banana_tasks(tasks):
-    """写入任务历史文件, 并清理旧的 'downloaded' 任务"""
     try:
-        downloaded_tasks = [
-            (task_id, info) for task_id, info in tasks.items()
-            if info.get("status") == "downloaded"
-        ]
-        
+        downloaded_tasks = [(task_id, info) for task_id, info in tasks.items() if info.get("status") == "downloaded"]
         if len(downloaded_tasks) > MAX_BANANA_HISTORY_DOWNLOADED:
             downloaded_tasks.sort(key=lambda x: x[1].get("submitted_at", "1970-01-01 00:00:00"))
             tasks_to_remove = downloaded_tasks[:-MAX_BANANA_HISTORY_DOWNLOADED]
-            
-            print(f"[Banana Task Manager] 清理 {len(tasks_to_remove)} 个旧的 'downloaded' 任务。")
             for task_id, _ in tasks_to_remove:
-                if task_id in tasks:
-                    del tasks[task_id]
+                if task_id in tasks: del tasks[task_id]
         
         with open(BANANA_TASK_FILE, 'w', encoding='utf-8') as f:
             json.dump(tasks, f, indent=4, ensure_ascii=False, sort_keys=True)
     except IOError as e:
         print(f"[Banana Task Manager] 写入任务文件失败: {e}")
 
-
-def _get_next_task_number():
-    """获取下一个任务编号"""
+def _get_next_task_number(is_batch=False):
+    """
+    根据任务类型获取下一个序号。
+    is_batch=False: 查找 "任务X"
+    is_batch=True:  查找 "批量任务X"
+    """
     tasks = _read_banana_tasks()
     existing_nums = []
+    
+    prefix = "批量任务" if is_batch else "任务"
+    
     for task_key in tasks.keys():
-        if task_key.startswith("任务"):
+        if task_key.startswith(prefix):
+            # 确保严格匹配前缀，防止 "批量任务" 匹配到 "任务"
+            if not is_batch and task_key.startswith("批量任务"):
+                continue
+                
             try:
-                num = int(task_key[2:])
-                existing_nums.append(num)
+                # 提取数字部分
+                num_str = task_key[len(prefix):]
+                if num_str.isdigit():
+                    existing_nums.append(int(num_str))
             except ValueError:
                 continue
+                
     return max(existing_nums, default=0) + 1
 
-# --- 节点 1: NanoBanana 异步提交 ---
+# --- 节点 1: NanoBanana 异步提交 (单任务) ---
 class NanoBananaAsyncSubmit(_GrsaiNodeBase):
     CATEGORY = "Nkxx/图像"
     
@@ -375,15 +312,21 @@ class NanoBananaAsyncSubmit(_GrsaiNodeBase):
     def INPUT_TYPES(cls):
         return {"required": {
                     "prompt": ("STRING", {"multiline": True, "default": "一只可爱的小猫"}),
+                    "model": (SUPPORTED_MODELS_ASYNC, {"default": "nano-banana-fast"}),
+                    "image_size": (["默认", "1K", "2K", "4K"], {"default": "默认"}),
                     "concurrency": ("INT", {"default": 1, "min": 1, "max": 10, "step": 1}),
                     "aspect_ratio": (SUPPORTED_ASPECT_RATIOS, {"default": "auto"}),
                 }, "optional": {
                     "api_key": ("STRING", {"multiline": False, "default": "", "placeholder": "留空则使用 __init__.py 中的配置"}),
                     "image_1": ("IMAGE",), "image_2": ("IMAGE",),
                     "image_3": ("IMAGE",), "image_4": ("IMAGE",),
+                    "image_5": ("IMAGE",), "image_6": ("IMAGE",),
+                    "image_7": ("IMAGE",), "image_8": ("IMAGE",),
+                    "image_9": ("IMAGE",), "image_10": ("IMAGE",),
+                    "image_11": ("IMAGE",), "image_12": ("IMAGE",),
+                    "image_13": ("IMAGE",), "image_14": ("IMAGE",),		
                 }}
     
-    # *** 变更: 只有一个输出 ***
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("status",)
     FUNCTION = "submit"
@@ -391,59 +334,52 @@ class NanoBananaAsyncSubmit(_GrsaiNodeBase):
     @classmethod
     def IS_CHANGED(cls, **kwargs): return float("NaN")
     
-    def submit(self, prompt: str, concurrency: int, aspect_ratio: str, api_key: str = "", **kwargs):
+    def submit(self, prompt: str, model: str, image_size: str, concurrency: int, aspect_ratio: str, api_key: str = "", **kwargs):
         final_api_key = get_api_key(api_key)
         if not final_api_key: 
-            # *** 变更: 自定义错误返回以匹配单个输出 ***
-            error_msg = "API Key 不能为空。"
-            print(f"节点执行错误: {error_msg}")
-            return {"ui": {"string": [error_msg]}, "result": (error_msg,)}
+            return {"ui": {"string": ["API Key 不能为空。"]}, "result": ("API Key 不能为空。",)}
         
-        images_in = [kwargs.get(f"image_{i}") for i in range(1, 5)]
-        
+        images_in = [kwargs.get(f"image_{i}") for i in range(1, 15)]
         try:
-            # (阻塞) 上传图片并获取URL
             uploaded_urls = self._handle_image_uploads(images_in, final_api_key)
-            
-            task_num = _get_next_task_number()
+            task_num = _get_next_task_number(is_batch=False)
             task_id = f"任务{task_num}"
-            
             api_client = GrsaiAPI(api_key=final_api_key)
             subtasks = []
+
+            final_image_size = None
+            # 支持 Pro 系列模型设置分辨率
+            if model in ["nano-banana-pro", "nano-banana-pro-vt"]:
+                if image_size == "默认": final_image_size = "2K"
+                else: final_image_size = image_size
             
-            # (阻塞) 提交多个子任务
             for i in range(concurrency):
                 payload = {
-                    "model": "nano-banana-fast",
-                    "prompt": f"{prompt}{secrets.choice(ZERO_WIDTH_CHARS) * i}", # 添加唯一字符
+                    "model": model,
+                    "prompt": f"{prompt}{secrets.choice(ZERO_WIDTH_CHARS) * i}",
                     "aspectRatio": aspect_ratio,
                     "urls": uploaded_urls,
                     "webHook": "-1",
                     "shutProgress": True
                 }
-                
-                # (阻塞) 使用新的错误处理方法
-                response = self._make_api_request_with_error_handling(
-                    api_client, "/v1/draw/nano-banana", payload
-                )
-                
-                api_task_id = response["data"]["id"]
-                
+                if final_image_size: payload["imageSize"] = final_image_size
+                response = self._make_api_request_with_error_handling(api_client, "/v1/draw/nano-banana", payload)
                 subtasks.append({
-                    "api_task_id": api_task_id,
-                    "status": "pending",
+                    "api_task_id": response["data"]["id"],
+                    "status": "running",
                     "image_url": None,
                     "progress": 0,
                     "failure_reason": None
                 })
             
-            # (快速) 保存任务记录
             with banana_task_lock:
                 tasks = _read_banana_tasks()
                 tasks[task_id] = {
-                    "prompt": prompt, # 保存 prompt
+                    "type": "normal", # 标记为普通任务
+                    "prompt": prompt,
+                    "model": model,
                     "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "status": "pending",
+                    "status": "running",
                     "aspect_ratio": aspect_ratio,
                     "concurrency": concurrency,
                     "subtasks": subtasks
@@ -451,22 +387,149 @@ class NanoBananaAsyncSubmit(_GrsaiNodeBase):
                 _write_banana_tasks(tasks)
             
             credits = self._get_credits_balance(final_api_key)
-            status_msg = f"任务提交成功 | {task_id} | 子任务数: {concurrency} | 积分: {credits if credits >= 0 else 'N/A'}"
-            # *** 变更: 单个输出返回 ***
+            status_msg = f"任务提交成功 | {task_id} | 模型: {model} | 子任务数: {concurrency} | 积分: {credits if credits >= 0 else 'N/A'}"
             return {"ui": {"string": [status_msg]}, "result": (status_msg,)}
-            
-        except GrsaiAPIError as e:
-            # *** 变更: 自定义错误返回 ***
-            error_msg = str(e)
-            print(f"节点执行错误: {error_msg}")
-            return {"ui": {"string": [error_msg]}, "result": (error_msg,)}
         except Exception as e:
-            # *** 变更: 自定义错误返回 ***
             error_msg = f"提交失败: {format_error_message(e)}"
             print(f"节点执行错误: {error_msg}")
             return {"ui": {"string": [error_msg]}, "result": (error_msg,)}
 
-# --- 节点 2: NanoBanana 异步查询下载 ---
+# --- 节点 2: NanoBanana 异步批量提交 (新增) ---
+class NanoBananaAsyncBatchSubmit(_GrsaiNodeBase):
+    CATEGORY = "Nkxx/图像"
+    
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {"required": {
+                "file_path": ("STRING", {"default": "", "placeholder": "拖拽 CSV/Excel 文件至此"}),
+                "column_name": ("STRING", {"default": "prompt"}),
+                "prompt_prefix": ("STRING", {"multiline": True, "default": ""}),
+                "model": (SUPPORTED_MODELS_ASYNC, {"default": "nano-banana-fast"}),
+                "image_size": (["默认", "1K", "2K", "4K"], {"default": "默认"}),
+                "aspect_ratio": (SUPPORTED_ASPECT_RATIOS, {"default": "auto"}),
+                "executions_per_prompt": ("INT", {"default": 1, "min": 1, "max": 10, "step": 1, "label": "单提示词执行次数"}),
+            }, "optional": {
+                "api_key": ("STRING", {"multiline": False, "default": "", "placeholder": "留空则使用 __init__.py 中的配置"}),
+                "image_1": ("IMAGE",), "image_2": ("IMAGE",),
+                "image_3": ("IMAGE",), "image_4": ("IMAGE",),
+            }}
+    
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("status",)
+    FUNCTION = "submit_batch"
+    
+    @classmethod
+    def IS_CHANGED(cls, **kwargs): return float("NaN")
+    
+    def submit_batch(self, file_path: str, column_name: str, prompt_prefix: str, model: str, image_size: str, aspect_ratio: str, executions_per_prompt: int, api_key: str = "", **kwargs):
+        final_api_key = get_api_key(api_key)
+        if not final_api_key: 
+            return {"ui": {"string": ["API Key 不能为空。"]}, "result": ("API Key 不能为空。",)}
+        
+        # 1. 验证和读取文件
+        if not file_path or not os.path.exists(file_path):
+            return self._create_error_result("文件路径为空或文件不存在。", is_text_output=True)
+        
+        try:
+            if file_path.lower().endswith('.csv'): df = pd.read_csv(file_path, encoding='utf-8')
+            elif file_path.lower().endswith(('.xls', '.xlsx')): df = pd.read_excel(file_path)
+            else: return self._create_error_result("仅支持 .csv, .xls, .xlsx 文件。", is_text_output=True)
+        except Exception as e: return self._create_error_result(f"读取文件失败: {format_error_message(e)}", is_text_output=True)
+        
+        if column_name not in df.columns: return self._create_error_result(f"列 '{column_name}' 不存在。", is_text_output=True)
+        
+        base_prompts = [f"{prompt_prefix}{p}" for p in df[column_name].dropna().astype(str).tolist()]
+        if not base_prompts: return self._create_error_result(f"列 '{column_name}' 中未找到有效 prompt。", is_text_output=True)
+        
+        # 扩展 Prompt 列表 (单词多次执行)
+        prompts = [p for p in base_prompts for _ in range(max(1, executions_per_prompt))]
+        total_tasks = len(prompts)
+
+        # 2. 处理图片上传 (批量节点只支持4张)
+        images_in = [kwargs.get(f"image_{i}") for i in range(1, 5)]
+        try:
+            uploaded_urls = self._handle_image_uploads(images_in, final_api_key)
+        except Exception as e:
+            return self._create_error_result(str(e), is_text_output=True)
+
+        # 3. 准备参数
+        final_image_size = None
+        if model in ["nano-banana-pro", "nano-banana-pro-vt"]:
+            if image_size == "默认": final_image_size = "2K"
+            else: final_image_size = image_size
+        
+        api_client = GrsaiAPI(api_key=final_api_key)
+        subtasks = []
+        errors = []
+
+        # 4. 并发提交 API 任务
+        # 虽然是异步节点，但我们需要快速将所有请求发给服务器拿到 task_id
+        def submit_single_req(p_idx, prompt_text):
+            try:
+                # 添加零宽字符防止去重缓存 (如果有的话)
+                final_prompt = f"{prompt_text}{secrets.choice(ZERO_WIDTH_CHARS) * (p_idx % 10)}"
+                payload = {
+                    "model": model,
+                    "prompt": final_prompt,
+                    "aspectRatio": aspect_ratio,
+                    "urls": uploaded_urls,
+                    "webHook": "-1",
+                    "shutProgress": True
+                }
+                if final_image_size: payload["imageSize"] = final_image_size
+                response = self._make_api_request_with_error_handling(api_client, "/v1/draw/nano-banana", payload)
+                return {
+                    "api_task_id": response["data"]["id"],
+                    "status": "running",
+                    "image_url": None,
+                    "progress": 0,
+                    "failure_reason": None,
+                    "original_prompt": prompt_text
+                }
+            except Exception as e:
+                return {"error": str(e)}
+
+        # 使用线程池加快提交速度
+        print(f"[Banana Async Batch] 开始提交 {total_tasks} 个任务...")
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_idx = {executor.submit(submit_single_req, i, p): i for i, p in enumerate(prompts)}
+            for future in concurrent.futures.as_completed(future_to_idx):
+                res = future.result()
+                if "error" in res:
+                    errors.append(res["error"])
+                else:
+                    subtasks.append(res)
+        
+        if not subtasks:
+             return self._create_error_result(f"所有任务提交均失败。错误示例: {errors[0] if errors else '未知'}", is_text_output=True)
+
+        # 5. 写入任务记录
+        task_num = _get_next_task_number(is_batch=True)
+        task_id = f"批量任务{task_num}"
+        
+        with banana_task_lock:
+            tasks = _read_banana_tasks()
+            tasks[task_id] = {
+                "type": "batch", # 标记为批量任务
+                "prompt": f"批量文件: {os.path.basename(file_path)}", # 批量任务不需要详细prompt，记个文件名
+                "model": model,
+                "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "status": "running",
+                "aspect_ratio": aspect_ratio,
+                "concurrency": total_tasks, # 这里concurrency代表总子任务数
+                "subtasks": subtasks
+            }
+            _write_banana_tasks(tasks)
+
+        credits = self._get_credits_balance(final_api_key)
+        status_msg = f"批量提交完成 | {task_id} | 成功提交: {len(subtasks)}/{total_tasks} | 积分: {credits if credits >= 0 else 'N/A'}"
+        if errors:
+            status_msg += f" | 提交失败数: {len(errors)}"
+            
+        return {"ui": {"string": [status_msg]}, "result": (status_msg,)}
+
+
+# --- 节点 3: NanoBanana 异步查询下载 (通用) ---
 class NanoBananaAsyncQuery(_GrsaiNodeBase):
     CATEGORY = "Nkxx/图像"
     
@@ -482,6 +545,55 @@ class NanoBananaAsyncQuery(_GrsaiNodeBase):
     
     @classmethod
     def IS_CHANGED(cls, **kwargs): return float("NaN")
+
+    def _generate_display_status(self, tasks: Dict) -> str:
+        all_tasks_status = []
+        
+        # 中文状态映射表
+        status_map = {
+            "running": "运行中",
+            "pending": "排队中",
+            "succeeded": "已完成", # 指服务端完成，等待下载
+            "failed": "失败",
+            "downloaded": "已下载"
+        }
+
+        # 按提交时间倒序显示
+        for tid, tinfo in sorted(tasks.items(), key=lambda x: x[1].get('submitted_at', ''), reverse=True):
+            raw_status = tinfo.get('status', 'running')
+            task_type = tinfo.get('type', 'normal') # 默认为 normal 兼容旧数据
+            concurrency = tinfo.get('concurrency', 0)
+            
+            # 计算子任务进度
+            subtasks = tinfo.get('subtasks', [])
+            total_sub = len(subtasks)
+            
+            # 统计成功/失败数
+            success_sub = sum(1 for s in subtasks if s.get('status') == 'succeeded')
+            fail_sub = sum(1 for s in subtasks if s.get('status') == 'failed')
+            done_sub = success_sub + fail_sub
+            
+            if raw_status == 'pending': raw_status = 'running'
+            
+            # 获取中文状态
+            display_str = status_map.get(raw_status, raw_status).upper()
+            
+            if task_type == 'batch':
+                # 批量任务：显示详细进度 (成功/失败)
+                # 格式: [运行中] 批量任务1 - 进度: 10/50 (成功:8 失败:2)
+                info_text = f"进度: {done_sub}/{total_sub}"
+                if done_sub > 0:
+                    info_text += f" (成功: {success_sub} | 失败: {fail_sub})"
+                all_tasks_status.append(f"[{display_str}] {tid} - {info_text}")
+            else:
+                # 普通任务：显示Prompt缩略
+                prompt_full = tinfo.get('prompt', '')
+                prompt_snippet = prompt_full[:15] + "..." if len(prompt_full) > 15 else prompt_full
+                all_tasks_status.append(f"[{display_str}] {tid} ({prompt_snippet}) - {concurrency}个子任务")
+        
+        if not all_tasks_status:
+            return "当前无任务记录"
+        return "\n".join(all_tasks_status)
     
     def query_and_download(self, api_key: str = ""):
         final_api_key = get_api_key(api_key)
@@ -493,237 +605,174 @@ class NanoBananaAsyncQuery(_GrsaiNodeBase):
         
         if not tasks:
             return self._create_error_result("当前没有任务记录。", is_text_output=True)
+
+        api_client = GrsaiAPI(api_key=final_api_key)
         
-        # 查找第一个已完成 (succeeded) 且未下载的任务
-        task_to_download = None
-        task_info_to_download = None
+        # =================================================
+        # 第一步：刷新所有未“完结”的任务状态
+        # =================================================
+        active_tasks = []
+        for tid, tinfo in tasks.items():
+            if tinfo.get("status") not in ["succeeded", "failed", "downloaded"]:
+                active_tasks.append((tid, tinfo))
         
-        for task_id, task_info in sorted(tasks.items()):
-            if task_info.get("status") == "succeeded" and task_info.get("status") != "downloaded":
-                subtasks = task_info.get("subtasks", [])
-                all_succeeded = all(subtask.get("status") == "succeeded" for subtask in subtasks)
-                if subtasks and all_succeeded:
-                    task_to_download = task_id
-                    task_info_to_download = task_info
-                    # print(f"[Banana Query] 发现可下载任务: {task_id}") # 已注释
-                    break
+        tasks_updated = False
         
-        # 如果没有可下载的，选择最早未完成的
-        if not task_to_download:
-            pending_tasks = []
-            for tid, tinfo in tasks.items():
-                if tinfo.get("status") in ["pending", "running"]:
-                    pending_tasks.append((tid, tinfo))
+        if active_tasks:
+            print(f"[Banana Query] 正在刷新 {len(active_tasks)} 个活跃任务的状态...")
             
-            if pending_tasks:
-                # 优先处理最早提交的 pending/running 任务
-                task_id, task_info = min(pending_tasks, key=lambda x: x[1].get("submitted_at", ""))
-                print(f"[Banana Query] 更新最早未完成任务: {task_id}")
-            else:
-                # 如果没有 pending/running，也没有可下载的，说明都下载完了
-                task_id_for_status = list(tasks.keys())[-1] if tasks else "N/A"
-                print(f"[Banana Query] 没有待处理或可下载的任务。")
-                all_tasks_status = []
-                for tid, tinfo in sorted(tasks.items(), key=lambda x: x[1].get('submitted_at', ''), reverse=True):
-                    status = tinfo.get('status', 'N/A')
-                    concurrency = tinfo.get('concurrency', 1)
-                    prompt_full = tinfo.get('prompt', '')
-                    prompt_snippet = prompt_full[:15]
-                    if len(prompt_full) > 15: prompt_snippet += "..."
-                    all_tasks_status.append(f"[{status}] {tid} ({prompt_snippet}) - {concurrency}个子任务")
-                status_msg = "没有待处理或可下载的任务。\n所有任务:\n" + "\n".join(all_tasks_status)
-                return {"ui": {"string": [status_msg]}, "result": (torch.zeros((1, 1, 1, 3), dtype=torch.float32), status_msg)}
-        else:
-            task_id = task_to_download
-            task_info = task_info_to_download
+            for tid, tinfo in active_tasks:
+                subtasks = tinfo.get("subtasks", [])
+                if not subtasks: continue
+                
+                any_sub_running = False 
+                any_sub_succeeded = False 
+                subtask_updated = False
+                
+                # 遍历所有子任务查询状态
+                # 对于批量任务，子任务可能很多，这里依然逐个查询（API限制通常较宽，但如果非常多可能需要优化，暂保持逐个）
+                for subtask in subtasks:
+                    current_status = subtask.get("status", "running")
+                    if current_status in ["succeeded", "failed"]:
+                        if current_status == "succeeded":
+                            any_sub_succeeded = True
+                        continue 
+                        
+                    api_task_id = subtask.get("api_task_id")
+                    if not api_task_id: 
+                        current_status = "failed"
+                    else:
+                        try:
+                            response = api_client._make_request("POST", "/v1/draw/result", data={"id": api_task_id})
+                            query_data = response.get("data", {})
+                            
+                            if not query_data:
+                                current_status = "running" 
+                            else:
+                                api_status = query_data.get("status", "running")
+                                if api_status == "pending":
+                                    current_status = "running"
+                                else:
+                                    current_status = api_status
+                                    
+                                if query_data.get("results") and len(query_data["results"]) > 0:
+                                    subtask["image_url"] = query_data["results"][0].get("url")
+                                    
+                                if current_status == "failed":
+                                    subtask["failure_reason"] = query_data.get("failure_reason", "未知错误")
+                                    
+                        except Exception as e:
+                            # print(f"[Banana Query] 查询子任务 {api_task_id} 异常: {e}")
+                            current_status = "running"
+
+                    if subtask.get("status") != current_status:
+                        subtask["status"] = current_status
+                        subtask_updated = True
+                    
+                    if current_status == "running":
+                        any_sub_running = True
+                    elif current_status == "succeeded":
+                        any_sub_succeeded = True
+                
+                old_status = tinfo.get("status")
+                
+                if any_sub_running:
+                    final_main_status = "running"
+                else:
+                    if any_sub_succeeded:
+                        final_main_status = "succeeded"
+                    else:
+                        final_main_status = "failed"
+                
+                if final_main_status != old_status or subtask_updated:
+                    tinfo["status"] = final_main_status
+                    tinfo["subtasks"] = subtasks
+                    tasks_updated = True
+
+        if tasks_updated:
+            with banana_task_lock:
+                current_snapshot = _read_banana_tasks()
+                for tid, tinfo in tasks.items():
+                    if tid in current_snapshot:
+                        current_snapshot[tid] = tinfo
+                _write_banana_tasks(current_snapshot)
+                tasks = current_snapshot 
+
+        # =================================================
+        # 第二步：下载 (succeeded 状态可能包含部分成功)
+        # =================================================
+        succeeded_candidates = []
+        for tid, tinfo in tasks.items():
+            if tinfo.get("status") == "succeeded":
+                succeeded_candidates.append((tid, tinfo))
         
-        subtasks = task_info.get("subtasks", [])
+        status_display_text = self._generate_display_status(tasks)
         
-        if not subtasks:
-            return self._create_error_result(f"{task_id} 无子任务记录。", is_text_output=True)
+        if not succeeded_candidates:
+            return {"ui": {"string": [status_display_text]}, "result": (torch.zeros((1, 1, 1, 3), dtype=torch.float32), status_display_text)}
+        
+        # 按提交时间排序，下载最早的一个 (无论是普通任务还是批量任务)
+        succeeded_candidates.sort(key=lambda x: x[1].get("submitted_at", "2999-01-01"))
+        target_tid, target_tinfo = succeeded_candidates[0]
         
         try:
-            api_client = GrsaiAPI(api_key=final_api_key)
+            pil_images = []
+            subtasks = target_tinfo.get("subtasks", [])
             
-            print(f"[Banana Query] 开始查询任务 {task_id} 的 {len(subtasks)} 个子任务")
+            # 并发下载图片，因为批量任务可能有几十张图
+            download_futures = {}
+            with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+                for sub in subtasks:
+                    if sub.get("status") == "succeeded" and sub.get("image_url"):
+                        future = executor.submit(download_image, sub.get("image_url"))
+                        download_futures[future] = sub
+                
+                for future in concurrent.futures.as_completed(download_futures):
+                    img = future.result()
+                    if img:
+                        pil_images.append(img)
             
-            all_succeeded = True
-            all_failed = True
-            any_running = False
-            pending_count = 0
-            failed_count = 0
-            succeeded_count = 0
+            if not pil_images:
+                 return self._create_error_result(f"{target_tid} 图片下载失败 (部分成功任务)。", is_text_output=True)
             
-            # (阻塞) 查询所有子任务状态
-            for i, subtask in enumerate(subtasks):
-                # 如果子任务已经成功，跳过查询
-                if subtask.get("status") == "succeeded":
-                    succeeded_count += 1
-                    all_failed = False
-                    continue
-
-                api_task_id = subtask.get("api_task_id")
-                if not api_task_id:
-                    print(f"[Banana Query] 子任务{i}缺少api_task_id")
-                    all_succeeded = False
-                    continue
-                
-                # print(f"[Banana Query] 查询子任务{i+1}: {api_task_id}") # 已注释
-                response = api_client._make_request("POST", "/v1/draw/result", 
-                                                    data={"id": api_task_id})
-                
-                # print(f"[Banana Query] API响应: {json.dumps(response)[:200]}...") # 已注释
-                
-                query_data = response.get("data", {})
-                if not query_data:
-                    if response.get("code") == -22:
-                        print(f"[Banana Query] 任务 {api_task_id} API 尚未找到 (code -22)，将重试。")
-                        status = "pending"
-                        progress = 0
-                        image_url = None
-                    else:
-                        raise GrsaiAPIError(f"API 响应中没有 'data' 字段。响应: {response}")
-                else:
-                    status = query_data.get("status", "")
-                    progress = query_data.get("progress", 0)
-                    image_url = None
-                    if query_data.get("results") and len(query_data["results"]) > 0:
-                        image_url = query_data["results"][0].get("url")
-                
-                # print(f"[Banana Query] 子任务{i+1}状态: {status}, 进度: {progress}%, URL: {image_url[:50] if image_url else 'None'}") # 已注释
-                
-                subtask["status"] = status
-                subtask["progress"] = progress
-                
-                if status == "succeeded":
-                    subtask["image_url"] = image_url
-                    succeeded_count += 1
-                    all_failed = False
-                    # print(f"[Banana Query] 子任务{i+1}成功") # 已注释
-                elif status == "failed":
-                    subtask["failure_reason"] = query_data.get("failure_reason", "未知错误")
-                    failed_count += 1
-                    all_succeeded = False
-                    # print(f"[Banana Query] 子任务{i+1}失败") # 已注释
-                elif status == "running":
-                    any_running = True
-                    all_succeeded = False
-                    all_failed = False
-                    # print(f"[Banana Query] 子任务{i+1}运行中: {progress}%") # 已注释
-                else: # pending
-                    pending_count += 1
-                    all_succeeded = False
-                    all_failed = False
-                    # print(f"[Banana Query] 子任务{i+1}等待中") # 已注释
-            
-            print(f"[Banana Query] 任务{task_id}汇总 - 成功: {succeeded_count}, 失败: {failed_count}, 等待: {pending_count}, 运行中: {any_running}")
-            
-            # (快速) 更新主任务状态
             with banana_task_lock:
-                tasks = _read_banana_tasks()
-                if task_id not in tasks: # 检查任务是否已被删除
-                    return self._create_error_result(f"任务 {task_id} 在写入时丢失。")
+                current_tasks = _read_banana_tasks()
+                if target_tid in current_tasks:
+                    current_tasks[target_tid]["status"] = "downloaded"
+                    _write_banana_tasks(current_tasks)
+                    status_display_text = self._generate_display_status(current_tasks)
 
-                if all_succeeded:
-                    tasks[task_id]["status"] = "succeeded"
-                    # print(f"[Banana Query] 任务{task_id}状态更新为: succeeded") # 已注释
-                elif all_failed:
-                    tasks[task_id]["status"] = "failed"
-                    # print(f"[Banana Query] 任务{task_id}状态更新为: failed") # 已注释
-                elif any_running:
-                    tasks[task_id]["status"] = "running"
-                    # print(f"[Banana Query] 任务{task_id}状态更新为: running") # 已注释
-                else:
-                    tasks[task_id]["status"] = "pending"
-                    # print(f"[Banana Query] 任务{task_id}状态更新为: pending") # 已注释
-                
-                tasks[task_id]["subtasks"] = subtasks
-                _write_banana_tasks(tasks) # 写入时会触发清理
-                # print(f"[Banana Query] 任务状态已写入文件") # 已注释
+            # 统计
+            total_subtasks = len(subtasks)
+            success_count = len(pil_images)
+            fail_count = total_subtasks - success_count
             
-            all_tasks_status = []
-            for tid, tinfo in sorted(tasks.items(), key=lambda x: x[1].get('submitted_at', ''), reverse=True):
-                status = tinfo.get('status', 'N/A')
-                concurrency = tinfo.get('concurrency', 1)
-                prompt_full = tinfo.get('prompt', '')
-                prompt_snippet = prompt_full[:15]
-                if len(prompt_full) > 15:
-                    prompt_snippet += "..."
-                
-                if status == 'running':
-                    subtasks_list = tinfo.get('subtasks', [])
-                    if subtasks_list:
-                        valid_subtasks = [s for s in subtasks_list if 'progress' in s]
-                        if valid_subtasks:
-                            avg_progress = sum(s.get('progress', 0) for s in valid_subtasks) / len(valid_subtasks)
-                            status_str = f"running {int(avg_progress)}%"
-                        else:
-                            status_str = "running 0%"
-                    else:
-                        status_str = "running"
-                else:
-                    status_str = status
-                
-                all_tasks_status.append(f"[{status_str}] {tid} ({prompt_snippet}) - {concurrency}个子任务")
-            
-            # (阻塞) 如果所有子任务都成功，批量下载
-            if all_succeeded:
-                print(f"[Banana Query] 任务{task_id}全部成功，开始下载图片")
-                pil_images = []
-                for i, subtask in enumerate(subtasks):
-                    image_url = subtask.get("image_url")
-                    if image_url:
-                        # print(f"[Banana Query] 下载子任务{i+1}图片: {image_url[:50]}...") # 已注释
-                        pil_image = download_image(image_url)
-                        if pil_image:
-                            pil_images.append(pil_image)
-                            # print(f"[Banana Query] 子任务{i+1}图片下载成功") # 已注释
-                        else:
-                            print(f"[Banana Query] 子任务{i+1}图片下载失败")
-                    else:
-                        print(f"[Banana Query] 子任务{i+1}无图片URL")
-                
-                if not pil_images:
-                    return self._create_error_result(f"{task_id} 所有图片下载失败。", is_text_output=True)
-                
-                # (快速) 标记为已下载
-                with banana_task_lock:
-                    tasks = _read_banana_tasks()
-                    tasks[task_id]["status"] = "downloaded"
-                    _write_banana_tasks(tasks) # 写入时会触发清理
-                    # print(f"[Banana Query] 任务{task_id}标记为已下载") # 已注释
-                
-                credits = self._get_credits_balance(final_api_key)
-                # 更新 all_tasks_status 以反映 "downloaded"
-                for i, task_str in enumerate(all_tasks_status):
-                    if task_str.startswith(f"[succeeded] {task_id}"):
-                        all_tasks_status[i] = task_str.replace("[succeeded]", "[downloaded]", 1)
-                        break
-                
-                status_msg = f"下载成功: {task_id} | 子任务: {len(subtasks)}个 | 积分: {credits if credits >= 0 else 'N/A'}\n所有任务:\n" + "\n".join(all_tasks_status)
-                return {"ui": {"string": [status_msg]}, "result": (safe_pil_batch_to_tensor(pil_images), status_msg)}
-            
-            elif all_failed:
-                status_msg = f"任务失败: {task_id} | 成功: {succeeded_count} | 失败: {failed_count} | 等待: {pending_count}\n所有任务:\n" + "\n".join(all_tasks_status)
-                return {"ui": {"string": [status_msg]}, "result": (torch.zeros((1, 1, 1, 3), dtype=torch.float32), status_msg)}
-            
+            credits = self._get_credits_balance(final_api_key)
+            credits_str = str(credits) if credits >= 0 else 'N/A'
+
+            if fail_count > 0:
+                result_title = "部分成功"
+                count_info = f"成功: {success_count} | 失败: {fail_count}"
             else:
-                status_msg = f"任务进行中: {task_id} | 成功: {succeeded_count} | 失败: {failed_count} | 等待: {pending_count}\n所有任务:\n" + "\n".join(all_tasks_status)
-                return {"ui": {"string": [status_msg]}, "result": (torch.zeros((1, 1, 1, 3), dtype=torch.float32), status_msg)}
-                
+                result_title = "下载成功"
+                count_info = f"共 {success_count} 张"
+
+            final_msg = f"{result_title}: {target_tid} | {count_info} | 积分: {credits_str}\n{status_display_text}"
+            
+            return {"ui": {"string": [final_msg]}, "result": (safe_pil_batch_to_tensor(pil_images), final_msg)}
+            
         except Exception as e:
-            error_msg = f"查询失败: {format_error_message(e)}"
-            print(f"[Banana Query] {error_msg}")
-            traceback.print_exc()
-            return self._create_error_result(error_msg, is_text_output=True)
+            return self._create_error_result(f"下载过程出错: {e}", is_text_output=True)
 
 # --- 节点注册 ---
 NODE_CLASS_MAPPINGS = {
     "NanoBananaAsyncSubmit": NanoBananaAsyncSubmit,
+    "NanoBananaAsyncBatchSubmit": NanoBananaAsyncBatchSubmit,
     "NanoBananaAsyncQuery": NanoBananaAsyncQuery,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "NanoBananaAsyncSubmit": "🍌 Nano Banana 异步提交",
+    "NanoBananaAsyncBatchSubmit": "🍌 Nano Banana 异步批量提交 (CSV/Excel)",
     "NanoBananaAsyncQuery": "🍌 Nano Banana 异步查询下载",
 }

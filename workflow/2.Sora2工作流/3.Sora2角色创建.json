@@ -1,0 +1,402 @@
+{
+  "id": "68bd6b01-0885-441c-9e7d-9ae85ba2455b",
+  "revision": 0,
+  "last_node_id": 14,
+  "last_link_id": 6,
+  "nodes": [
+    {
+      "id": 6,
+      "type": "easy showAnything",
+      "pos": [
+        -78.9452568572681,
+        31.356607424779572
+      ],
+      "size": [
+        210,
+        98.04270696860002
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "Success\nID: kimpbyew.snowpawsgu\n备注: 熊大\n(已保存到 character_library.txt)"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "easy showAnything",
+      "pos": [
+        -111.35843081890134,
+        269.8798688494894
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "nesterczs.emberarcan"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        -1009.5669156190411,
+        147.96156752980505
+      ],
+      "size": [
+        422.9599999999998,
+        83.815
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "分组切换按钮",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 13,
+      "type": "Note",
+      "pos": [
+        -784.7108277505898,
+        -157.1339734138574
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "自己把视频路径复制进去-->"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 9,
+      "type": "easy showAnything",
+      "pos": [
+        -105.6877658189014,
+        420.9647038494897
+      ],
+      "size": [
+        238.04999999999995,
+        101.75
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "Success\nID: nesterczs.emberarcan\n备注: 小红\n(已保存到 character_library.txt)"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Sora2FromPidCharacter_Grsai",
+      "pos": [
+        -503.2110181190404,
+        300.1608603934414
+      ],
+      "size": [
+        345.70515624999996,
+        178.84000000000003
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "character_id",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2FromPidCharacter_Grsai"
+      },
+      "widgets_values": [
+        "",
+        0,
+        3,
+        "",
+        "小红"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "Note",
+      "pos": [
+        -796.8345135805868,
+        333.53130498114234
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "我工作流生成了sora2视频会有对应pid信息，把那个复制过来用就好了-->"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        -71.32052673481554,
+        -100.43060905129583
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "kimpbyew.snowpawsgu"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Sora2UploadCharacter_Grsai",
+      "pos": [
+        -533.8176463600848,
+        -101.70598188487446
+      ],
+      "size": [
+        422.51015624999997,
+        174
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "character_id",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2UploadCharacter_Grsai"
+      },
+      "widgets_values": [
+        "",
+        0,
+        3,
+        "",
+        "熊大"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      4,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      2,
+      4,
+      1,
+      6,
+      0,
+      "*"
+    ],
+    [
+      5,
+      12,
+      0,
+      8,
+      0,
+      "*"
+    ],
+    [
+      6,
+      12,
+      1,
+      9,
+      0,
+      "*"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "上传创建角色，不能用真人角色的视频",
+      "bounding": [
+        -547.8459858189012,
+        -180.09179215051057,
+        774.3576469999999,
+        347.3511830000001
+      ],
+      "color": "#8AA",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "从Sora生成的视频创建角色，可以创建真人角色",
+      "bounding": [
+        -545.3787381190419,
+        181.87966402980487,
+        770.6421950000001,
+        381.8857805
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.8264462809917354,
+      "offset": [
+        1008.3392416252227,
+        134.52228025686748
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}

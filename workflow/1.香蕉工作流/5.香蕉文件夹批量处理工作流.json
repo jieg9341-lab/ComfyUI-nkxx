@@ -1,0 +1,368 @@
+{
+  "id": "5c9ce1e5-a016-4592-ab61-7d4eea8a9f97",
+  "revision": 0,
+  "last_node_id": 8,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "PreviewImage",
+      "pos": [
+        586.8057152826714,
+        922.7431256996658
+      ],
+      "size": [
+        140,
+        246
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 5
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        -239.51721860756774,
+        1304.1784067013555
+      ],
+      "size": [
+        235.7029575979492,
+        96.3204909968249
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "成功生成 2 条记录并写入: generated_prompts.csv"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Text Multiline",
+      "pos": [
+        -682.6835223639583,
+        925.0660620295976
+      ],
+      "size": [
+        384.1369070282851,
+        334.115240579044
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "字符串",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "was-ns",
+        "ver": "3.0.0",
+        "Node name for S&R": "Text Multiline"
+      },
+      "widgets_values": [
+        "# 任务：将文本列表转换为JSON数组\n\n## 1. 你的角色\n你是一个精确的数据格式化工具。\n\n## 2. 你的指令\n仔细阅读下面用三重反引号（```）包裹的文本内容。你的**唯一任务**是：\n- 将文本中的**每一行**都视为一个独立的字符串。\n- 将这些字符串汇总成一个标准的JSON数组。\n- **绝对不要**修改、翻译、解释或删除原文的任何内容。保持原样。\n\n## 3. 输出格式要求 (最关键)\n- 必须以一个JSON数组的格式返回结果。\n- 严禁在JSON数组之外添加任何说明、标题或解释性文字。\n\n## 4. 在下方粘贴你的提示词列表（每行一条）\n```\n生成45度侧视图，半身特写\n生成头肩特写图，正视图\n```"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "easy showAnything",
+      "pos": [
+        561.1242797563547,
+        1221.4545301722997
+      ],
+      "size": [
+        365.2414075533849,
+        247.80050258092479
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "📢 【重要提示】预览图如果含黑边仅为兼容显示，实际保存的原图无黑边！\n✅ 批量任务完成\n📁 输入: test\n📄 Prompts: 2\n🔢 总任务: 6\n🖼️ 成功: 6\n❌ 失败: 0\n💰 积分: 92652\n💾 路径: /workspace/ComfyUI/output/Banana_Batch_20251205_231905\n⚠️ 预览仅显示前 15 张，全量图请查看文件夹。\n\n✨ 完美！所有文件均处理成功。"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        167.682787178543,
+        1315.7664067683359
+      ],
+      "size": [
+        305.98573807495916,
+        147.72878308874715
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "使用说明",
+      "properties": {},
+      "widgets_values": [
+        "把要处理的文件夹路径填到directory_path,\nmax_concurrent_files是同时处理的图片文件数量\nexecution_per_prompt指每个提示词重复生成的次数，默认1\n\n批量处理消耗的积分可能很多，看清楚参数再运行。\n处理好的图片会自动保存到文件夹里\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "GrsaiNanoBananaBatchDir",
+      "pos": [
+        155.72552600612832,
+        919.0832457547173
+      ],
+      "size": [
+        400,
+        324
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "csv_file_path",
+          "type": "STRING",
+          "widget": {
+            "name": "csv_file_path"
+          },
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images_preview_15",
+          "type": "IMAGE",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "status_report",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrsaiNanoBananaBatchDir"
+      },
+      "widgets_values": [
+        "/workspace/test",
+        "",
+        "prompt",
+        "nano-banana-fast",
+        5,
+        "auto",
+        "默认",
+        1,
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "GrsaiLLMWriter",
+      "pos": [
+        -270.12007701338575,
+        949.2866679513329
+      ],
+      "size": [
+        400,
+        278
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "main_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "main_prompt"
+          },
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "file_path",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrsaiLLMWriter"
+      },
+      "widgets_values": [
+        "gemini-2.5-flash",
+        "请为我生成5条关于“夏日海滩”的Midjourney绘画prompt",
+        "You are a helpful assistant.",
+        "generated_prompts.csv",
+        "prompt",
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      4,
+      0,
+      2,
+      3,
+      "STRING"
+    ],
+    [
+      2,
+      2,
+      0,
+      1,
+      0,
+      "STRING"
+    ],
+    [
+      3,
+      2,
+      1,
+      5,
+      0,
+      "*"
+    ],
+    [
+      4,
+      1,
+      1,
+      6,
+      0,
+      "*"
+    ],
+    [
+      5,
+      1,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "批量处理文件夹中的图片",
+      "bounding": [
+        -693.7785173430392,
+        830.4487665915058,
+        1628.9675902996005,
+        687.1238310083602
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5730855330116831,
+      "offset": [
+        895.6279349073636,
+        -611.4898660568327
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}

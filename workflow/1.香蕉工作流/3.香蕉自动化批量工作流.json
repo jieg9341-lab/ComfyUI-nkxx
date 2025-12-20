@@ -1,8 +1,8 @@
 {
   "id": "e74b4b0f-67b5-4463-9382-329a628d3c54",
   "revision": 0,
-  "last_node_id": 25,
-  "last_link_id": 26,
+  "last_node_id": 27,
+  "last_link_id": 34,
   "nodes": [
     {
       "id": 13,
@@ -195,45 +195,6 @@
       ]
     },
     {
-      "id": 6,
-      "type": "easy showAnything",
-      "pos": [
-        -51.233375549316406,
-        -19.85497283935547
-      ],
-      "size": [
-        210,
-        92.63749694824219
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "label": "输入任何",
-          "name": "anything",
-          "shape": 7,
-          "type": "*",
-          "link": 26
-        }
-      ],
-      "outputs": [
-        {
-          "name": "output",
-          "type": "*",
-          "links": null
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui-easy-use",
-        "ver": "1.3.3",
-        "Node name for S&R": "easy showAnything"
-      },
-      "widgets_values": [
-        "批量完成 | 总Prompt: 2 | 成功: 2 | 失败: 0 | 积分: 51959"
-      ]
-    },
-    {
       "id": 21,
       "type": "Text Multiline",
       "pos": [
@@ -321,33 +282,43 @@
       "bgcolor": "#653"
     },
     {
-      "id": 5,
-      "type": "PreviewImage",
+      "id": 4,
+      "type": "LoadImage",
       "pos": [
-        369.552978515625,
-        -131.30743408203125
+        -782.5678100585938,
+        3.451089382171631
       ],
       "size": [
-        790.6260986328125,
-        696.5967407226562
+        214.080078125,
+        326
       ],
       "flags": {},
-      "order": 13,
+      "order": 8,
       "mode": 0,
-      "inputs": [
+      "inputs": [],
+      "outputs": [
         {
-          "name": "images",
+          "name": "IMAGE",
           "type": "IMAGE",
-          "link": 25
+          "links": [
+            31
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
         }
       ],
-      "outputs": [],
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.56",
-        "Node name for S&R": "PreviewImage"
+        "Node name for S&R": "LoadImage"
       },
-      "widgets_values": []
+      "widgets_values": [
+        "火灵儿1.jpg",
+        "image"
+      ]
     },
     {
       "id": 15,
@@ -361,7 +332,7 @@
         269.09088134765625
       ],
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -380,54 +351,83 @@
         "Node name for S&R": "Text Multiline"
       },
       "widgets_values": [
-        "# 任务：将文本列表转换为JSON数组\n\n## 1. 你的角色\n你是一个精确的数据格式化工具。\n\n## 2. 你的指令\n仔细阅读下面用三重反引号（```）包裹的文本内容。你的**唯一任务**是：\n- 将文本中的**每一行**都视为一个独立的字符串。\n- 将这些字符串汇总成一个标准的JSON数组。\n- **绝对不要**修改、翻译、解释或删除原文的任何内容。保持原样。\n\n## 3. 输出格式要求 (最关键)\n- 必须以一个JSON数组的格式返回结果。\n- 严禁在JSON数组之外添加任何说明、标题或解释性文字。\n\n## 4. 在下方粘贴你的提示词列表（每行一条）\n```\n表情改成微笑\n表情改成大笑\n```"
+        "# 任务：将文本列表转换为JSON数组\n\n## 1. 你的角色\n你是一个精确的数据格式化工具。\n\n## 2. 你的指令\n仔细阅读下面用三重反引号（```）包裹的文本内容。你的**唯一任务**是：\n- 将文本中的**每一行**都视为一个独立的字符串。\n- 将这些字符串汇总成一个标准的JSON数组。\n- **绝对不要**修改、翻译、解释或删除原文的任何内容。保持原样。\n\n## 3. 输出格式要求 (最关键)\n- 必须以一个JSON数组的格式返回结果。\n- 严禁在JSON数组之外添加任何说明、标题或解释性文字。\n\n## 4. 在下方粘贴你的提示词列表（每行一条）\n```\n表情改成悲伤，面部特写\n表情改成苦涩，面部特写\n```"
       ]
     },
     {
-      "id": 4,
-      "type": "LoadImage",
+      "id": 5,
+      "type": "PreviewImage",
       "pos": [
-        -782.5678100585938,
-        3.451089382171631
+        369.552978515625,
+        -131.30743408203125
       ],
       "size": [
-        214.080078125,
-        326
+        790.6260986328125,
+        696.5967407226562
       ],
       "flags": {},
-      "order": 9,
+      "order": 13,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 33
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.56",
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "easy showAnything",
+      "pos": [
+        -58.38337554931639,
+        -48.4549728393554
+      ],
+      "size": [
+        310.0999999999998,
+        98.13749694824216
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 34
+        }
+      ],
       "outputs": [
         {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            24
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
+          "name": "output",
+          "type": "*",
           "links": null
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.56",
-        "Node name for S&R": "LoadImage"
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
       },
       "widgets_values": [
-        "48b73bcb914a33980c7b44c7f20acca0dc81b00ef8b2639208291218f93d8216_128_N.png",
-        "image"
+        "失败: 所有图像生成均失败: GrsaiAPIError: 图像生成失败: google gemini timeout...; GrsaiAPIError: 图像生成失败: google gemini timeout..."
       ]
     },
     {
       "id": 24,
       "type": "GrsaiLLMWriter",
       "pos": [
-        -521.3163373453632,
-        179.38838012655367
+        -518.4174193453628,
+        156.84124012655374
       ],
       "size": [
         400,
@@ -469,7 +469,7 @@
           "name": "file_path",
           "type": "STRING",
           "links": [
-            23
+            32
           ]
         },
         {
@@ -493,15 +493,15 @@
       ]
     },
     {
-      "id": 25,
+      "id": 27,
       "type": "GrsaiNanoBananaBatch",
       "pos": [
-        -97.78285102718188,
-        174.03727062655366
+        -103.53262332094802,
+        99.03258849641419
       ],
       "size": [
         400,
-        292
+        364
       ],
       "flags": {},
       "order": 11,
@@ -511,7 +511,7 @@
           "name": "image_1",
           "shape": 7,
           "type": "IMAGE",
-          "link": 24
+          "link": 31
         },
         {
           "name": "image_2",
@@ -537,7 +537,7 @@
           "widget": {
             "name": "file_path"
           },
-          "link": 23
+          "link": 32
         }
       ],
       "outputs": [
@@ -545,14 +545,14 @@
           "name": "images_batch",
           "type": "IMAGE",
           "links": [
-            25
+            33
           ]
         },
         {
           "name": "status",
           "type": "STRING",
           "links": [
-            26
+            34
           ]
         }
       ],
@@ -563,9 +563,12 @@
         "",
         "prompt",
         "",
+        "nano-banana-fast",
         10,
         50,
-        "auto",
+        "3:4",
+        "默认",
+        1,
         ""
       ]
     }
@@ -588,32 +591,32 @@
       "STRING"
     ],
     [
-      23,
-      24,
-      0,
-      25,
-      4,
-      "STRING"
-    ],
-    [
-      24,
+      31,
       4,
       0,
-      25,
+      27,
       0,
       "IMAGE"
     ],
     [
-      25,
-      25,
+      32,
+      24,
+      0,
+      27,
+      4,
+      "STRING"
+    ],
+    [
+      33,
+      27,
       0,
       5,
       0,
       "IMAGE"
     ],
     [
-      26,
-      25,
+      34,
+      27,
       1,
       6,
       0,
@@ -729,10 +732,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.8264462809917362,
+      "scale": 0.46650738020973337,
       "offset": [
-        844.5181223834506,
-        180.1300484751004
+        1264.1949695995188,
+        401.70183084759753
       ]
     },
     "frontendVersion": "1.28.5",

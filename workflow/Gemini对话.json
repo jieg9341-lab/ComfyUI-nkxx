@@ -1,0 +1,434 @@
+{
+  "id": "a7ca147f-61c7-4fa5-a404-9d82bf6fa0eb",
+  "revision": 0,
+  "last_node_id": 15,
+  "last_link_id": 17,
+  "nodes": [
+    {
+      "id": 13,
+      "type": "LoadImage",
+      "pos": [
+        -352.5049452580805,
+        509.32530202725036
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "-我叫夯大力，我宣布我今天是甜妹-小团团05-22.webp",
+        "image"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "easy showAnything",
+      "pos": [
+        865.3600547419197,
+        103.37030202725042
+      ],
+      "size": [
+        277.09299999999985,
+        243.61849999999987
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 15,
+      "type": "easy showAnything",
+      "pos": [
+        583.1880547419189,
+        104.03580202725051
+      ],
+      "size": [
+        225.8494999999998,
+        143.7934999999999
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "easy showAnything",
+      "pos": [
+        515.4111750953791,
+        548.0747812614569
+      ],
+      "size": [
+        386.0586544674575,
+        366.0299103649169
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "一位年轻的亚洲女性，留着深色长发，身上穿着一件浅蓝色短款针织上衣，搭配一条长款印花裙子，裙子是米白色底色，上面印着蓝色的花朵图案。她肩上挎着一个浅蓝色的小包，脚上穿着一双浅蓝色毛绒拖鞋。她站在纯色背景前，背景墙是暖米色，地面是深棕色的木地板。"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "easy showAnything",
+      "pos": [
+        976.0155044453783,
+        551.0606801114576
+      ],
+      "size": [
+        140,
+        76.00000000000006
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "null"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        584.1237477419193,
+        299.94073102725054
+      ],
+      "size": [
+        239.03999999999996,
+        82
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "开关",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 1,
+      "type": "GRSAIVLMNode",
+      "pos": [
+        79.4544929,
+        541.4050083499997
+      ],
+      "size": [
+        400,
+        260
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 15
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_4",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_5",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_6",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response_text",
+          "type": "STRING",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "error_msg",
+          "type": "STRING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GRSAIVLMNode"
+      },
+      "widgets_values": [
+        "gemini-2.5-flash-lite",
+        "描述外观",
+        "随机",
+        ""
+      ]
+    },
+    {
+      "id": 11,
+      "type": "GRSAILLMNode",
+      "pos": [
+        77.04616018021733,
+        121.84272990792621
+      ],
+      "size": [
+        394.0105000000001,
+        258.564
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "response_text",
+          "type": "STRING",
+          "links": [
+            16
+          ]
+        },
+        {
+          "name": "error_msg",
+          "type": "STRING",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GRSAILLMNode"
+      },
+      "widgets_values": [
+        "gemini-2.5-flash-lite",
+        "你好",
+        "随机",
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      13,
+      1,
+      0,
+      8,
+      0,
+      "*"
+    ],
+    [
+      14,
+      1,
+      1,
+      9,
+      0,
+      "*"
+    ],
+    [
+      15,
+      13,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      11,
+      0,
+      14,
+      0,
+      "*"
+    ],
+    [
+      17,
+      11,
+      1,
+      15,
+      0,
+      "*"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "VLM图文对话",
+      "bounding": [
+        59.96379934191942,
+        460.06399982725026,
+        1114.9574999999993,
+        532.54
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "LLM文本对话",
+      "bounding": [
+        59.96379934191938,
+        41.948499827250586,
+        430.82349999999985,
+        354.186
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.751314800901578,
+      "offset": [
+        417.4628883211379,
+        -91.94304950063864
+      ]
+    },
+    "frontendVersion": "1.28.5"
+  },
+  "version": 0.4
+}

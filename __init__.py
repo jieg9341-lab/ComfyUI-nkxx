@@ -1,8 +1,44 @@
 # -- ComfyUI-Nkxx/__init__.py --
+# -- ComfyUI-Nkxx/__init__.py --
 import os
 import importlib
 import traceback
 import builtins
+import sys
+import subprocess
+import importlib.util
+
+# --- 自动依赖安装逻辑  ---
+
+def check_and_install_dependencies():
+    # 在这里定义你需要检测的库
+    required_packages = {
+        "requests": "requests",
+        "pandas": "pandas",
+        "openpyxl": "openpyxl",
+        "yt-dlp": "yt_dlp"  # 注意：pip名是横杠，import名是下划线
+    }
+
+    print(f"--- [ComfyUI-Nkxx] 正在检查核心依赖... ---")
+
+    for package_name, import_name in required_packages.items():
+        # 检测库是否存在
+        spec = importlib.util.find_spec(import_name)
+        
+        if spec is None:
+            print(f"  > 检测到缺失库: {package_name}，正在自动安装...")
+            try:
+                # 使用当前 Python 环境的 pip 进行安装
+                subprocess.check_call([sys.executable, '-m', 'pip', 'install', package_name])
+                print(f"  > {package_name} 安装成功！")
+            except subprocess.CalledProcessError:
+                print(f"  > [警告] {package_name} 安装失败，请尝试手动安装。")
+        else:
+            pass
+
+# 执行依赖检查
+check_and_install_dependencies()
+
 
 # --- 全局通用配置 ---
 

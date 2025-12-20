@@ -1,55 +1,22 @@
 {
   "id": "94ddbb57-a3fe-4241-bc23-cbf8b242db4e",
   "revision": 0,
-  "last_node_id": 14,
-  "last_link_id": 11,
+  "last_node_id": 16,
+  "last_link_id": 15,
   "nodes": [
-    {
-      "id": 10,
-      "type": "SaveVideo",
-      "pos": [
-        56.50161225568104,
-        -281.3979604720701
-      ],
-      "size": [
-        438.3996000000002,
-        387.18946851568785
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "video",
-          "type": "VIDEO",
-          "link": 9
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.62",
-        "Node name for S&R": "SaveVideo"
-      },
-      "widgets_values": [
-        "video/ComfyUI",
-        "auto",
-        "auto"
-      ]
-    },
     {
       "id": 4,
       "type": "easy showAnything",
       "pos": [
-        -285.6107931714328,
-        -288.88290058184344
+        -314.70170226234205,
+        -286.610173309116
       ],
       "size": [
         227.44999999999993,
         88
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -57,7 +24,7 @@
           "name": "anything",
           "shape": 7,
           "type": "*",
-          "link": 10
+          "link": 15
         }
       ],
       "outputs": [
@@ -73,64 +40,8 @@
         "Node name for S&R": "easy showAnything"
       },
       "widgets_values": [
-        "https://file4.grsai.com/file/9da3883362e14c599f9a9ca613a29da3.mp4"
+        "https://file18.grsai.com/file/2698378fdc7b40d797fabe763002e770.mp4"
       ]
-    },
-    {
-      "id": 11,
-      "type": "Fast Groups Muter (rgthree)",
-      "pos": [
-        -1075.4437772569938,
-        -252.06763301114148
-      ],
-      "size": [
-        210,
-        106
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "label": "可选连接",
-          "name": "OPT_CONNECTION",
-          "type": "*",
-          "links": null
-        }
-      ],
-      "properties": {
-        "matchColors": "",
-        "matchTitle": "",
-        "showNav": true,
-        "showAllGraphs": true,
-        "sort": "position",
-        "customSortAlphabet": "",
-        "toggleRestriction": "default"
-      }
-    },
-    {
-      "id": 8,
-      "type": "Note",
-      "pos": [
-        -1391.4235960429216,
-        -101.3876220943768
-      ],
-      "size": [
-        210,
-        88
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "1600积分1个视频，也就是0.08至0.16一个视频\n10s和15s视频价格一样"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
     },
     {
       "id": 14,
@@ -144,15 +55,15 @@
         314
       ],
       "flags": {},
-      "order": 2,
-      "mode": 0,
+      "order": 0,
+      "mode": 4,
       "inputs": [],
       "outputs": [
         {
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            8
+            12
           ]
         },
         {
@@ -175,15 +86,15 @@
       "id": 5,
       "type": "easy showAnything",
       "pos": [
-        -695.805532319031,
-        42.5148358677157
+        -680.3509868644857,
+        53.87847223135206
       ],
       "size": [
         242.3675000000003,
         191.87850000000003
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -191,7 +102,7 @@
           "name": "anything",
           "shape": 7,
           "type": "*",
-          "link": 11
+          "link": 13
         }
       ],
       "outputs": [
@@ -207,29 +118,85 @@
         "Node name for S&R": "easy showAnything"
       },
       "widgets_values": [
-        "状态: 成功\n任务ID: 4608e478-8d32-405e-8c96-092882e7ada8\n视频已下载\n剩余积分: 50358"
+        "状态:  succes\n任务ID: 45da783b-8ab9-45ae-b49f-9ac0836de237\nPID: s_6918930b1088819187aa4424d69ae62f\n视频已下载\n剩余积分: 41080"
       ]
     },
     {
-      "id": 12,
-      "type": "Sora2Generator_Grsai",
+      "id": 10,
+      "type": "SaveVideo",
       "pos": [
-        -377.12809869511494,
-        -153.3825602541032
+        56.50161225568104,
+        -281.3979604720701
       ],
       "size": [
-        400,
-        224
+        437.7341000000001,
+        496.45568181818203
       ],
       "flags": {},
       "order": 3,
       "mode": 0,
       "inputs": [
         {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 14
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        -1082.0779330429214,
+        -30.668842094376906
+      ],
+      "size": [
+        260.04999999999995,
+        112.19999999999999
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "1600积分1个视频，也就是0.08至0.16一个视频\n10s和15s视频价格一样\n\nsize选large视频可能更稳定一些，但时间可能更久\n\nremix就是sora2的视频修改功能\n如果需要用到就把对应的PID填入remixtargetid中"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "Sora2Generator_Grsai",
+      "pos": [
+        -382.2191936379283,
+        -138.96441738622215
+      ],
+      "size": [
+        400,
+        248
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
           "name": "image",
           "shape": 7,
           "type": "IMAGE",
-          "link": 8
+          "link": 12
         }
       ],
       "outputs": [
@@ -237,21 +204,21 @@
           "name": "video",
           "type": "VIDEO",
           "links": [
-            9
+            14
           ]
         },
         {
           "name": "video_url",
           "type": "STRING",
           "links": [
-            10
+            15
           ]
         },
         {
           "name": "response",
           "type": "STRING",
           "links": [
-            11
+            13
           ]
         }
       ],
@@ -259,43 +226,45 @@
         "Node name for S&R": "Sora2Generator_Grsai"
       },
       "widgets_values": [
-        "吃橙子",
+        "",
         "16:9",
         "10",
+        "small",
+        "默认无",
         ""
       ]
     }
   ],
   "links": [
     [
-      8,
+      12,
       14,
       0,
-      12,
+      16,
       0,
       "IMAGE"
     ],
     [
-      9,
-      12,
+      13,
+      16,
+      2,
+      5,
+      0,
+      "*"
+    ],
+    [
+      14,
+      16,
       0,
       10,
       0,
       "VIDEO"
     ],
     [
-      10,
-      12,
+      15,
+      16,
       1,
       4,
-      0,
-      "*"
-    ],
-    [
-      11,
-      12,
-      2,
-      5,
       0,
       "*"
     ]
@@ -318,10 +287,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.5644739300537776,
+      "scale": 0.620921323059155,
       "offset": [
-        1510.845397294667,
-        819.8101595871829
+        1076.8503098287558,
+        579.5234365998759
       ]
     },
     "frontendVersion": "1.28.5"
