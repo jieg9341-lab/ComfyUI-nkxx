@@ -614,7 +614,7 @@ class GrsaiLLMWriter(_GrsaiNodeBase):
     @classmethod
     def INPUT_TYPES(cls):
         return {"required": {
-                "model": (["gemini-2.5-flash", "gemini-3-pro", "gemini-2.5-flash-lite"], {"default": "gemini-2.5-flash"}),
+                "model": (["gemini-3-flash", "gemini-3-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"], {"default": "gemini-3-flash"}),
                 "main_prompt": ("STRING", {"multiline": True, "default": "请为我生成5条关于“夏日海滩”的Midjourney绘画prompt"}),
                 "system_prompt": ("STRING", {"default": "You are a helpful assistant.", "multiline": True}),
                 "output_filename": ("STRING", {"default": "generated_prompts.csv"}),
