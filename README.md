@@ -6,7 +6,7 @@
 
 ## 📢 重要资源与支持 (Important)
 
-* 🔑 **API Key 申请地址**: [**nkxx.grsai.com**](http://nkxx.grsai.com)
+* 🔑 **API Key 申请地址**: [**nkxx.grsai.ai**](http://nkxx.grsai.ai)
     > 本节点包依赖该 API 服务，请先前往注册申请 Key。
 * 📺 **作者 Bilibili 主页**: [**点击关注**](https://space.bilibili.com/3546882187987924)
     > 欢迎大家关注我的B站账号并分享给更多的朋友使用！
