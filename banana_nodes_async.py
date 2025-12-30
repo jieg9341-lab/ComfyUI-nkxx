@@ -185,7 +185,7 @@ class GrsaiAPI:
 # --- 配置 ---
 SUPPORTED_ASPECT_RATIOS = ["auto", "1:1", "16:9", "9:16", "4:3", "3:4", "3:2", "2:3", "5:4", "4:5", "21:9"]
 # 模型列表常量
-SUPPORTED_MODELS_ASYNC = ["nano-banana-fast", "nano-banana-pro", "nano-banana-pro-vt"]
+SUPPORTED_MODELS_ASYNC = ["nano-banana-fast", "nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"]
 
 # --- 节点基类 ---
 class _GrsaiNodeBase:
@@ -349,7 +349,7 @@ class NanoBananaAsyncSubmit(_GrsaiNodeBase):
 
             final_image_size = None
             # 支持 Pro 系列模型设置分辨率
-            if model in ["nano-banana-pro", "nano-banana-pro-vt"]:
+            if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"]:
                 if image_size == "默认": final_image_size = "2K"
                 else: final_image_size = image_size
             
@@ -454,7 +454,7 @@ class NanoBananaAsyncBatchSubmit(_GrsaiNodeBase):
 
         # 3. 准备参数
         final_image_size = None
-        if model in ["nano-banana-pro", "nano-banana-pro-vt"]:
+        if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"]:
             if image_size == "默认": final_image_size = "2K"
             else: final_image_size = image_size
         

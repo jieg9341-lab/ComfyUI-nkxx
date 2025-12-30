@@ -179,7 +179,7 @@ class GrsaiAPI:
         payload = {"model": model, "prompt": prompt, "urls": urls, "shutProgress": True, "aspectRatio": aspectRatio}
         
         # 仅在模型为 pro 或 pro-vt 时添加 imageSize 参数
-        if model in ["nano-banana-pro", "nano-banana-pro-vt"]:
+        if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"]:
             payload["imageSize"] = imageSize
 
         response = self._make_request("POST", "/v1/draw/nano-banana", data=payload)
@@ -201,7 +201,7 @@ class GrsaiAPI:
 # --- 配置 ---
 SUPPORTED_ASPECT_RATIOS = ["auto", "1:1", "16:9", "9:16", "4:3", "3:4", "3:2", "2:3", "5:4", "4:5", "21:9"]
 # 更新模型列表
-SUPPORTED_MODELS = ["nano-banana-fast", "nano-banana-pro", "nano-banana-pro-vt"]
+SUPPORTED_MODELS = ["nano-banana-fast", "nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"]
 
 # --- 节点基类 ---
 class _GrsaiNodeBase:
@@ -292,7 +292,7 @@ class GrsaiNanoBanana(_GrsaiNodeBase):
             
             def submit_task(_):
                 try:
-                    target_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt"] else "1K"
+                    target_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"] else "1K"
                     pils, _, errs = api_client.nano_banana_generate_image(
                         prompt, model, uploaded_urls, aspect_ratio, imageSize=target_size
                     )
@@ -324,7 +324,7 @@ class GrsaiNanoBananaPro(_GrsaiNodeBase):
         inputs = {
             "required": {
                 "prompt": ("STRING", {"multiline": True, "default": "一只可爱的小猫"}),
-                "model": (["nano-banana-pro", "nano-banana-pro-vt"], {"default": "nano-banana-pro"}),
+                "model": (["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"], {"default": "nano-banana-pro"}),
                 "concurrency": ("INT", {"default": 1, "min": 1, "max": 10, "step": 1}),
                 "aspect_ratio": (SUPPORTED_ASPECT_RATIOS, {"default": "auto"}),
                 "image_size": (["1K", "2K", "4K"], {"default": "2K"}),
@@ -432,7 +432,7 @@ class GrsaiNanoBananaBatch(GrsaiNanoBanana):
             return self._create_error_result(uploaded_urls["error"])
         
         if image_size == "默认":
-            final_image_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt"] else "1K"
+            final_image_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"] else "1K"
         else:
             final_image_size = image_size
 
@@ -521,7 +521,7 @@ class GrsaiNanoBananaSaveWithPrompt(_GrsaiNodeBase):
             return self._create_error_result(uploaded_urls["error"])
         
         if image_size == "默认":
-            final_image_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt"] else "1K"
+            final_image_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"] else "1K"
         else:
             final_image_size = image_size
 
@@ -947,7 +947,7 @@ class GrsaiNanoBananaBatchDir(_GrsaiNodeBase):
 
         final_image_size = image_size
         if image_size == "默认":
-            final_image_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt"] else "1K"
+            final_image_size = "2K" if model in ["nano-banana-pro", "nano-banana-pro-vt","nano-banana-pro-cl"] else "1K"
 
         # 4. 执行 (含熔断机制)
         failed_list = []   
