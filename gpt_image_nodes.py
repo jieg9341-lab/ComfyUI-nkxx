@@ -8,6 +8,7 @@ import json
 import numpy as np
 import time
 import traceback
+import re
 from io import BytesIO
 from typing import Any, Dict, Optional, Union, List, Tuple
 from PIL import Image
@@ -101,34 +102,65 @@ class GrsaiAPI:
         self.session = requests.Session()
         self.session.headers.update({
             "Content-Type": "application/json; charset=utf-8", 
-            "User-Agent": "ComfyUI-GptImage/1.0", 
+            "User-Agent": "ComfyUI-GptImage/1.1", 
             "Authorization": f"Bearer {self.api_key}"
         })
         self.base_url = "https://grsai.dakka.com.cn"
 
     def _make_request(self, method: str, endpoint: str, data: Optional[Dict] = None, timeout: int = 300) -> Dict[str, Any]:
-        """通用请求处理"""
+        """通用请求处理，增强了对 SSE (data: ...) 格式的解析能力"""
         url = f"{self.base_url}{endpoint}"
+        response = None
         try:
-            # 同步请求，设置较长超时时间 (300秒)
+            # 同步请求，设置较长超时时间
             response = self.session.request(method, url, json=data, timeout=timeout)
             response.raise_for_status()
             
-            # 处理可能的 SSE 格式残留 (虽然 shutProgress=True 应该返回纯 JSON，但做个防御)
-            text = response.text.strip()
-            if text.startswith("data: "):
-                text = text[6:]
+            raw_text = response.text.strip()
             
-            return json.loads(text)
-        except json.JSONDecodeError:
-            raise GrsaiAPIError(f"API返回了无法解析的数据: {response.text[:100]}...")
+            # 1. 尝试作为标准 JSON 解析
+            try:
+                return json.loads(raw_text)
+            except json.JSONDecodeError:
+                pass # 如果失败，尝试按 SSE流 处理
+
+            # 2. 处理 SSE 格式 (data: {json} \n data: {json} ...)
+            # 即使 shutProgress=True，API 也可能返回 data: 前缀
+            lines = raw_text.split('\n')
+            last_valid_json = None
+            
+            for line in lines:
+                line = line.strip()
+                # 匹配 'data:' 或 'data: ' 开头
+                if line.startswith("data:"):
+                    try:
+                        json_str = line[5:].strip()
+                        if json_str == "[DONE]": continue 
+                        if not json_str: continue
+                        
+                        parsed = json.loads(json_str)
+                        last_valid_json = parsed
+                    except:
+                        continue
+            
+            if last_valid_json:
+                return last_valid_json
+                
+            # 如果都解析失败，抛出包含原始内容的异常
+            raise GrsaiAPIError(f"无法解析API响应数据: {raw_text[:200]}...")
+
+        except requests.exceptions.RequestException as e:
+            msg = str(e)
+            if response is not None:
+                msg += f" | Response: {response.text[:100]}"
+            raise GrsaiAPIError(f"网络请求失败: {msg}")
         except Exception as e:
-            raise GrsaiAPIError(f"API请求失败: {str(e)}")
+            raise GrsaiAPIError(f"API请求处理异常: {str(e)}")
 
     def gpt_image_generate(self, prompt: str, urls: List[str], size: str, variants: int) -> Tuple[List[Image.Image], List[str], List[str]]:
         """
         同步生成图片
-        shutProgress=True -> 等待接口直接返回结果
+        shutProgress=True -> 告诉接口尽量直接返回结果，但我们仍需处理流式包装
         """
         payload = {
             "model": "sora-image",
@@ -136,38 +168,49 @@ class GrsaiAPI:
             "urls": urls,
             "size": size,
             "variants": variants,
-            "shutProgress": True, # 关闭进度推送，直接等待最终结果
+            "shutProgress": True, # 关闭进度推送
             # 不传 webHook
         }
 
         # 调用接口
         data = self._make_request("POST", "/v1/draw/completions", data=payload, timeout=300)
 
-        # 检查业务状态码
-        if data.get("code") and data.get("code") != 0:
-             raise GrsaiAPIError(f"API 错误: {data.get('msg')}")
+        # 检查业务状态码 (有些错误可能包含在 data 内部)
+        if isinstance(data, dict):
+            if data.get("code") and data.get("code") != 0:
+                 raise GrsaiAPIError(f"API 业务错误: {data.get('msg')} (Code: {data.get('code')})")
+            if data.get("status") == "failed":
+                 raise GrsaiAPIError(f"生成任务失败: {data.get('failure_reason', '未知原因')} - {data.get('error', '')}")
 
         # 解析结果兼容性处理
         results_info = []
         
-        # 优先查找标准 results 数组
+        # 1. 优先查找标准 results 数组 (新文档结构)
         if "results" in data and isinstance(data["results"], list):
             results_info = data["results"]
-        # 其次查找 data.results (有些接口包裹在 data 字段里)
+        # 2. 查找 data.results (部分旧接口包裹在 data 字段里)
         elif "data" in data and isinstance(data["data"], dict) and "results" in data["data"]:
             results_info = data["data"]["results"]
-        # 再次查找 data.url
+        # 3. 查找单图 url 字段 (旧参数兼容)
+        elif "url" in data and isinstance(data["url"], str):
+             # 确保它不是空字符串
+             if data["url"]:
+                results_info = [{"url": data["url"]}]
+        # 4. 查找 data.url
         elif "data" in data and isinstance(data["data"], dict) and "url" in data["data"]:
-            results_info = [{"url": data["data"]["url"]}]
-        # 最后查找根目录 url
-        elif "url" in data:
-            results_info = [{"url": data["url"]}]
+            if data["data"]["url"]:
+                results_info = [{"url": data["data"]["url"]}]
 
         if not results_info:
-             raise GrsaiAPIError(f"未在响应中找到图片URL: {data}")
+             # 打印一下调试信息帮助排查
+             print(f"[Debug] API Response Data: {json.dumps(data, ensure_ascii=False)[:500]}")
+             raise GrsaiAPIError("API响应成功但未找到图片URL，请检查控制台日志。")
 
-        target_urls = [r["url"] for r in results_info if "url" in r]
+        target_urls = [r["url"] for r in results_info if "url" in r and r["url"]]
         
+        if not target_urls:
+            raise GrsaiAPIError("解析到了结果结构，但URL为空。")
+
         # 下载图片
         pil_images = []
         download_errors = []
@@ -300,8 +343,6 @@ class GrsaiGptImage(_GrsaiNodeBase):
                     return [], [str(e)]
 
             # 并发执行
-            # 这里的并发是指：如果 concurrency=3，会同时发出3个HTTP请求，
-            # 它们在后台同时等待(sleep)，直到各自返回。
             with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
                 results = executor.map(task_runner, range(concurrency))
                 for pils, errs in results:
