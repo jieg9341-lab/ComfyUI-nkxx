@@ -1,0 +1,564 @@
+{
+  "id": "fff48ab0-0b76-41e8-bfa2-71a7490549c4",
+  "revision": 0,
+  "last_node_id": 16,
+  "last_link_id": 14,
+  "nodes": [
+    {
+      "id": 2,
+      "type": "GrokQueryTasks",
+      "pos": [
+        -793.8577559180771,
+        -235.85182444179193
+      ],
+      "size": [
+        292.5435546875,
+        58
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrokQueryTasks"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "type": "GrokGetNextVideo",
+      "pos": [
+        -146.4066440544407,
+        -225.1202742145198
+      ],
+      "size": [
+        258.1653046875,
+        46
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrokGetNextVideo"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "easy showAnything",
+      "pos": [
+        -146.8304267544424,
+        -82.85917209633816
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "下载成功: grok_grok:915_cd8d.mp4"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "easy showAnything",
+      "pos": [
+        -473.74215255444096,
+        -240.11903639633772
+      ],
+      "size": [
+        270,
+        170
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "--- Grok 任务队列 (Wujiai) ---\n[Succeeded] (grok-video-3-15s) : 在超市购物，买了一包薯片，打开吃了两片，...\n[Downloaded] (grok-video-3-10s) : @Image3牵着@Image1 和@I...\n[Downloaded] (grok-video-3-15s) : @Image 3牵着@Image 1 和...\n[Downloaded] (grok-video-3-10s) : @Image 3牵着@Image 1 和...\n[Downloaded] (grok-video-3-15s) : @Image 3牵着@Image 1 和...\n[Downloaded] (grok-video-3) : 在房间里，@Image 1 和@Imag...\n[Downloaded] (grok-video-3) : 在房间里，@Image1 和@Image..."
+      ]
+    },
+    {
+      "id": 5,
+      "type": "LoadImage",
+      "pos": [
+        -765.8116379544399,
+        -728.5541401463372
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "微信图片_20260313103414_978_499.png",
+        "image"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "SaveVideo",
+      "pos": [
+        120,
+        -250
+      ],
+      "size": [
+        474,
+        767.7777777777778
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 5
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "DynamicImageList",
+      "pos": [
+        -350,
+        -600
+      ],
+      "size": [
+        270,
+        98
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image_1",
+          "type": "IMAGE",
+          "link": 12
+        },
+        {
+          "name": "image_2",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "image_3",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "图像列表 (IMAGE)",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DynamicImageList"
+      },
+      "widgets_values": [
+        3
+      ]
+    },
+    {
+      "id": 6,
+      "type": "easy showAnything",
+      "pos": [
+        480,
+        -680
+      ],
+      "size": [
+        231.5,
+        110
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "Grok 任务提交成功!\n模型: grok-video-3-15s\nID: grok:91570b89-3758-4da1-9534-3ed61a1599fc"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "GrokSubmitTask",
+      "pos": [
+        -30,
+        -670
+      ],
+      "size": [
+        290,
+        190
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "images",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrokSubmitTask"
+      },
+      "widgets_values": [
+        "",
+        "16:9",
+        "15",
+        ""
+      ]
+    },
+    {
+      "id": 11,
+      "type": "StringConstant",
+      "pos": [
+        -1060,
+        -620
+      ],
+      "size": [
+        210,
+        71.97550000000001
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "title": "apikey",
+      "properties": {
+        "cnr_id": "comfyui-kjnodes",
+        "ver": "1.1.4",
+        "Node name for S&R": "StringConstant"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Note",
+      "pos": [
+        -1110,
+        -840
+      ],
+      "size": [
+        290,
+        150
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "文生视频比例选择才生效，否则视频比例根据参考图来。\n\n6s出的大多数都是480P的，\n10s、15s的是720P的，\n\n6s和10s、15s价格不一样，因为grok官网的720P和10s、15s选项目前只有会员才能用，成本比较高。\n\n6S和10S的支持最多7张参考图，15S的我测试了，暂时还么支持。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 10,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        -1033.1302769044419,
+        -487.44089469633803
+      ],
+      "size": [
+        210,
+        106
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "开关",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    }
+  ],
+  "links": [
+    [
+      3,
+      2,
+      0,
+      7,
+      0,
+      "*"
+    ],
+    [
+      4,
+      3,
+      1,
+      8,
+      0,
+      "*"
+    ],
+    [
+      5,
+      3,
+      0,
+      9,
+      0,
+      "VIDEO"
+    ],
+    [
+      7,
+      11,
+      0,
+      2,
+      0,
+      "STRING"
+    ],
+    [
+      9,
+      13,
+      0,
+      6,
+      0,
+      "*"
+    ],
+    [
+      10,
+      14,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      5,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "无极AI grok提交任务",
+      "bounding": [
+        -800,
+        -820,
+        1690,
+        460
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "下载下一个视频",
+      "bounding": [
+        -160,
+        -340,
+        780,
+        650
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "查询状态",
+      "bounding": [
+        -810,
+        -340,
+        622.95335,
+        329.4959500000001
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.6830134553650705,
+      "offset": [
+        1261.21780900494,
+        984.1395521309901
+      ]
+    },
+    "frontendVersion": "1.30.6"
+  },
+  "version": 0.4
+}

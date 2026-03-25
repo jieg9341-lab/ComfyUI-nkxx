@@ -1,102 +1,63 @@
-# ComfyUI-nkxx Custom Nodes
+# ComfyUI-nkxx (那颗星星 API 节点包)
 
-这是一个功能强大的 ComfyUI 自定义节点包，集成了 **GRSAI** 的多种服务。
+这是一个专为 ComfyUI 打造的综合性 AI 节点插件包，深度接入了 **Grsai** 和 **无极 AI (Wujiai)** 双渠道的强大模型生态。无论是顶级的图像生成、高质量的视频生成，还是大语言模型的图文理解与提示词生成，都能在 ComfyUI 中一站式、高效率地完成！
 
-本插件涵盖了**高质量图像生成 (Nano Banana, Sora-Image)**、**AI 视频生成 (Sora-2, Veo 3.1)** 以及 **多模态大模型 (Gemini)** 的工作流集成。特别针对**批量生产**、**异步任务管理**和**长视频/角色一致性**进行了深度优化。
-
-## 📢 重要资源与支持 (Important)
-
-* 🔑 **API Key 申请地址**: [**nkxx.grsai.ai**](http://nkxx.grsai.ai)
-    > 本节点包依赖该 API 服务，请先前往注册申请 Key。
-* 📺 **作者 Bilibili 主页**: [**点击关注**](https://space.bilibili.com/3546882187987924)
-    > 欢迎大家关注我的B站账号并分享给更多的朋友使用！
-
----
-## ✨ 核心功能亮点 (Features)
-
-* **🍌 Nano Banana 图像生成**
-    * 支持 **同步 (Sync)** 与 **异步 (Async)** 两种模式。
-    * **超强批量处理**：支持读取 CSV/Excel 文件批量生成，支持文件夹内图片遍历处理。
-    * **Pro 模型支持**：支持 2K/4K 高清分辨率，最大可用 14 张参考图。
-    * **智能熔断**：内置积分保护和错误重试机制。
-* **🤖 Grsai GPT Image (Sora-Image)**
-    * 基于 `sora-image` 模型的新一代图像生成。
-    * **多图参考**：支持上传最多 5 张参考图 (Ref Images) 进行风格/内容控制。
-    * **高并发支持**：支持设置并发数 (Concurrency) 和单次变体数量 (Variants)。
-* **🎬 Sora-2 视频生成**
-    * **全功能支持**：文生视频、图生视频、视频续写 (Remix)。
-    * **角色一致性**：支持通过上传视频或 PID 创建固定角色 (Character Consistency)。
-        * **自动记录**：创建成功的角色信息会自动保存在插件目录下的 `character_library.txt` 文件中，方便随时调用。
-    * **异步队列管理**：提交任务 -> 离线排队 -> 自动查询并下载，无需一直挂机等待。
-    * **下载增强**：内置 `yt-dlp` 和 `curl` 双重下载保障，解决大文件下载失败问题。
-* **🎥 Google Veo 3.1 视频**
-    * 支持 **Veo 3.1** 模型。
-    * **强控能力**：支持多张参考图 (Ref Image) 生成。
-    * **首尾帧控制**：支持指定 First Frame 和 Last Frame 进行视频生成。
-* **🧠 LLM & VLM 多模态**
-    * 集成 **Gemini 2.5 / 3 Pro** 模型。
-    * 支持纯文本对话及 **视觉理解 (VLM)**（图文对话）。
+## 🌟 作者与获取 API
+* **作者 B站**：[那颗星星188](https://space.bilibili.com/3546882187987924?spm_id_from=333.1007.0.0) （欢迎关注，获取最新教程与工作流更新！）
+* **Grsai 渠道 API 申请**：[nkxx.grsai.ai](http://nkxx.grsai.ai)
+* **无极 AI (Wujiai) 渠道 API 申请**：[点击这里注册获取](https://wujiai.org/register?aff=vW2s)
 
 ---
 
-## 🛠️ 安装方法 (Installation)
+## 🛠️ 安装指南
 
-1.  进入 ComfyUI 的 `custom_nodes` 目录：
-    ```bash
-    cd ComfyUI/custom_nodes/
-    ```
-2.  克隆本项目：
-    ```bash
-    git clone [https://github.com/jieg9341-lab/ComfyUI-nkxx.git](https://github.com/jieg9341-lab/ComfyUI-nkxx.git)
-    ```
-3.  依赖安装：
-    * 插件启动时会自动检测并安装核心依赖 (`requests`, `pandas`, `openpyxl`, `yt-dlp` 等)。
-    * 如果自动安装失败，请手动运行：
-        ```bash
-        pip install requests pandas openpyxl yt-dlp
-        ```
+### 1. 安装节点包
+将本节点包（`ComfyUI-nkxx` 文件夹）直接放置于你的 ComfyUI 自定义节点目录下：
+> ComfyUI/custom_nodes/ComfyUI-nkxx
+
+*(注：首次重启 ComfyUI 时，节点包会自动检测并安装所需的 Python 依赖库，如 `requests`, `pandas`, `yt-dlp` 等。如果自动安装失败，请手动在环境中 `pip install` 相关库。)*
+
+### 2. 导入内置工作流
+本节点包内置了作者精心调教的配套工作流。请将节点包内 `workflows` 目录下的所有内容，复制到 ComfyUI 的默认用户工作流文件夹中：
+> ComfyUI/user/default/workflows/
+
+复制完成后，刷新 ComfyUI 网页，即可在右侧面板的 `Load` 或工作流列表中直接调用“那颗星星工作流_grsai”和“那颗星星工作流_wujiai”系列。
 
 ---
 
-## 🔑 配置 API Key (Configuration)
+## ✨ 核心功能模块
 
-你可以通过以下三种方式配置 GRSAI 的 API Key（优先级由高到低）：
+### 🚀 无极 AI 渠道 (Wujiai)
+* **通用生图引擎 (Universal Generator)**：一个节点打通 Gemini、Nano Banana、Grok、GPT、Seedream 等多种模型。支持单图同步、异步生成，以及强大的 CSV/Excel 批量处理和本地文件夹批量生成。
+* **Midjourney 无极版**：完美复刻 MJ 的生图体验。支持垫图、风格参考(--sref)、角色参考(--cref)，并**独家支持前端按钮交互**（U/V/Reroll 动作直接在节点面板上点击刷新）。自带四宫格自动切分功能。
+* **顶尖视频生成**：
+    * **Sora2**：支持图生视频、文生视频、批量异步提交。
+    * **Veo 3.1**：支持首尾帧控制、多参考图、4K 分辨率生成。
+    * **Grok Video**：支持 Grok-video-3 及 10s/15s 长视频生成。
 
-1.  **节点输入框**：在每个节点的 `api_key` 选项中直接填入。
-2.  **全局配置 (推荐)**：打开 `__init__.py` 文件，修改 `YOUR_DEFAULT_API_KEY` 变量：
-    ```python
-    YOUR_DEFAULT_API_KEY = "sk-xxxxxxxxxxxxxxxxxxxxxxxx"
-    ```
-3.  **环境变量**：设置系统环境变量 `GRSAI_KEY`。
+### 🍌 Grsai 渠道
+* **Nano Banana 图像引擎**：支持nanobanana 1、2与 Pro 模型（最高支持 4K 分辨率），最多可同时传入 14 张参考图。支持单图、批量表单（CSV/Excel）、命名细化版导出。
+* **Sora2 视频与角色定制**：支持视频生成，以及强大的“角色上传”与“原视频提取角色”功能，并将角色 ID 自动归档至本地数据库。
+* **GPT Image (Sora-Image)**：支持 OpenAI 最新图像模型，兼容流式数据处理。
+* **Veo 3.1 视频**：同步/异步生成，全面支持首尾帧和多重垫图控制。
+* **VLM/LLM 视觉与语言助手**：接入 Gemini 2.5 / 3.1 系列大模型。可进行纯文本对话、多图视觉分析，非常适合用于自动化生成 Midjourney/生图提示词并保存为 CSV。
 
----
-
-## 📂 批量任务指南 (Batch Guide)
-
-本插件对批量任务提供了极佳的支持，尤其是 **CSV/Excel** 联动。
-
-### 数据文件格式
-请准备一个 `.csv` 或 `.xlsx` 文件，格式非常简单，只需包含一个标题行（列名），下方填入提示词即可：
-
-| prompt |
-| :--- |
-| 生成45度侧视图，半身特写 |
-| 生成头肩特写图，正视图 |
-| 生成头肩特写图，侧视图 |
-
-**使用方法：**
-1. 在 Excel 中第一行输入列名（例如 `prompt`）。
-2. 在下方单元格中填入你需要批量生成的提示词。
-3. 在 ComfyUI 批量节点的 `file_path` 中填入该文件的绝对路径。
-4. 在 `column_name` 中填入你的列名（如 `prompt`）。
+### 🧰 专属增强工具箱 (Tools)
+* **🔑 API Key 管理器**：可视化全局管理 API Key，支持多组 Key 切换，原生 UI 深度美化。
+* **🕹️ 快速运行中控台 (GroupRunner)**：读取工作流中的所有 Group，一键单独运行指定 Group 内的节点，极大提升巨型工作流的调试效率。
+* **🖼️ 图像动态列表**：可根据数字自由增减图像输入端口，实现动态合并。
+* **☁️ 模型云端热更新**：节点内置模型列表云端同步，随时获取最新模型支持，无需频繁更新插件代码。
 
 ---
 
-## 📝 更新日志
+## 🛡️ 核心优势与技术亮点
 
-* **v1.x**: 初始版本，集成 Nano Banana 和 Sora2。
-* **Update**: 新增 `Grsai GPT Image` 节点，新增功能齐全的异步香蕉工作流，优化 CSV 读取逻辑，增加角色库自动记录功能。
-
----
-
-**Disclaimer**: This project is a third-party plugin for ComfyUI and is not officially affiliated with the model providers. Use responsibly.
+1.  **安全熔断保护 (Circuit Breaker)**
+    * 内置智能请求频率检测。如果用户开启了 ComfyUI 的“Auto Queue(自动排队)”导致极短时间内重复提交相同提示词，系统将自动触发熔断拦截，防止您的 API 积分或额度被意外耗尽。
+2.  **企业级异步任务管理**
+    * 底层采用线程安全（Thread-Lock）的 `TaskManager`，将所有异步任务自动保存在本地 `data/` 目录的 JSON 数据库中。不怕断电、不怕重启，随时可以查询进度并下载结果。
+3.  **多线程与防爆下载**
+    * 视频下载器自带 `yt-dlp` 和 `curl` 双重回退机制，确保在大文件或网络波动环境下的极高下载成功率。
+4.  **无缝的批量自动化**
+    * 深度支持读取 `.csv`, `.xls`, `.xlsx` 文件进行批量跑图/跑视频。
+    * 支持扫描整个本地文件夹的图像，结合 CSV 提示词进行并发批量图生图，自动处理并保存到指定目录。

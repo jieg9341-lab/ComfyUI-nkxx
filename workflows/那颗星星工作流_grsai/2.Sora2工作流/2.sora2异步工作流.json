@@ -1,45 +1,9 @@
 {
   "id": "f00882cd-6cb8-4498-b89b-395b5486ffc2",
   "revision": 0,
-  "last_node_id": 38,
-  "last_link_id": 17,
+  "last_node_id": 42,
+  "last_link_id": 24,
   "nodes": [
-    {
-      "id": 21,
-      "type": "Sora2GetNextVideo",
-      "pos": [
-        1170.9940801782927,
-        315.3408668538937
-      ],
-      "size": [
-        241.3755859375,
-        46
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "video",
-          "type": "VIDEO",
-          "links": [
-            15
-          ]
-        },
-        {
-          "name": "report",
-          "type": "STRING",
-          "links": [
-            16
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Sora2GetNextVideo"
-      },
-      "widgets_values": []
-    },
     {
       "id": 35,
       "type": "Note",
@@ -52,7 +16,7 @@
         88
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -75,13 +39,13 @@
         657.2851598001967
       ],
       "flags": {},
-      "order": 7,
-      "mode": 0,
+      "order": 8,
+      "mode": 4,
       "inputs": [
         {
           "name": "video",
           "type": "VIDEO",
-          "link": 15
+          "link": 23
         }
       ],
       "outputs": [],
@@ -95,66 +59,6 @@
         "auto",
         "auto"
       ]
-    },
-    {
-      "id": 16,
-      "type": "LoadImage",
-      "pos": [
-        582.0338742019097,
-        -125.7246685051236
-      ],
-      "size": [
-        210,
-        326
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 4,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": []
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.62",
-        "Node name for S&R": "LoadImage"
-      },
-      "widgets_values": [
-        "f9c605f497496c888a18b56da4ffc00a0f925a2c311b8d05785e6bef3f75b391.png",
-        "image"
-      ]
-    },
-    {
-      "id": 15,
-      "type": "Note",
-      "pos": [
-        1637.9733212849103,
-        -36.431891059803164
-      ],
-      "size": [
-        338.0827134939185,
-        160.94242027229092
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "异步进行任务，不用再等一个任务完成再进行下一个了\n想提交几个都行\n因为会自动把任务Id写入json文件供后面的节点查询和获取视频结果\n\n记得通过开关一次只启用一个组，不然会几个组同时运行\n\n查询节点中可以看任务运行状态，如果状态变成succeed说明可以下载了，这时候再去运行获取视频那个组，不然运行也不会有视频\n获取视频的节点运行一次就获取一个视频\n\n如果出现视频下载失败的情况，可以去api后台日志里面拿视频，只要生成成功就会有视频链接的\n\n"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
     },
     {
       "id": 10,
@@ -176,7 +80,7 @@
           "name": "anything",
           "shape": 7,
           "type": "*",
-          "link": 14
+          "link": 20
         }
       ],
       "outputs": [
@@ -207,15 +111,15 @@
         165.78985019261083
       ],
       "flags": {},
-      "order": 9,
-      "mode": 4,
+      "order": 11,
+      "mode": 0,
       "inputs": [
         {
           "label": "输入任何",
           "name": "anything",
           "shape": 7,
           "type": "*",
-          "link": 17
+          "link": 18
         }
       ],
       "outputs": [
@@ -246,15 +150,15 @@
         196.66834181408393
       ],
       "flags": {},
-      "order": 8,
-      "mode": 0,
+      "order": 9,
+      "mode": 4,
       "inputs": [
         {
           "label": "输入任何",
           "name": "anything",
           "shape": 7,
           "type": "*",
-          "link": 16
+          "link": 24
         }
       ],
       "outputs": [
@@ -274,6 +178,231 @@
       ]
     },
     {
+      "id": 15,
+      "type": "Note",
+      "pos": [
+        1637.9733212849103,
+        -36.431891059803164
+      ],
+      "size": [
+        373.94610821526874,
+        169.90832528563516
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "异步进行任务，不用再等一个任务完成再进行下一个了\n想提交几个都行\n因为会自动把任务Id写入json文件供后面的节点查询和获取视频结果\n\n记得通过开关一次只启用一个组，不然会几个组同时运行\n\n查询节点中可以看任务运行状态，如果状态变成succeed说明可以下载了，这时候再去运行获取视频那个组，不然运行也不会有视频\n获取视频的节点运行一次就获取一个视频\n\n如果出现视频下载失败的情况，可以去api后台日志里面拿视频，只要生成成功就会有视频链接的\n\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "LoadImage",
+      "pos": [
+        582.0338742019097,
+        -125.7246685051236
+      ],
+      "size": [
+        210,
+        326
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "f9c605f497496c888a18b56da4ffc00a0f925a2c311b8d05785e6bef3f75b391.png",
+        "image"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "Sora2SubmitAndRecordTask_Grsai",
+      "pos": [
+        874.494213324218,
+        -59.46623843154867
+      ],
+      "size": [
+        400,
+        208
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 19
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2SubmitAndRecordTask_Grsai"
+      },
+      "widgets_values": [
+        "A cute cat playing on the grass",
+        "16:9",
+        "10",
+        "small",
+        "默认无",
+        ""
+      ]
+    },
+    {
+      "id": 40,
+      "type": "Sora2QueryTasks_Grsai",
+      "pos": [
+        548.7770069305342,
+        306.96566562336534
+      ],
+      "size": [
+        287.3755859375,
+        58
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2QueryTasks_Grsai"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 41,
+      "type": "PrimitiveString",
+      "pos": [
+        225.16547979640654,
+        293.62802244333255
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            21,
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 42,
+      "type": "Sora2GetNextVideo_Grsai",
+      "pos": [
+        1181.9603874703134,
+        304.15761840882215
+      ],
+      "size": [
+        227.3755859375,
+        46
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            23
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Sora2GetNextVideo_Grsai"
+      },
+      "widgets_values": []
+    },
+    {
       "id": 34,
       "type": "Fast Groups Bypasser (rgthree)",
       "pos": [
@@ -287,7 +416,7 @@
       "flags": {
         "collapsed": false
       },
-      "order": 4,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -309,112 +438,62 @@
       },
       "color": "#223",
       "bgcolor": "#335"
-    },
-    {
-      "id": 38,
-      "type": "Sora2SubmitAndRecordTask",
-      "pos": [
-        900.1334776706817,
-        -88.28501190537455
-      ],
-      "size": [
-        399.3857701321315,
-        247.92494141144323
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 4,
-      "inputs": [
-        {
-          "name": "image",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "response",
-          "type": "STRING",
-          "links": [
-            17
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Sora2SubmitAndRecordTask"
-      },
-      "widgets_values": [
-        "",
-        "9:16",
-        "15",
-        "small",
-        "默认无",
-        ""
-      ]
-    },
-    {
-      "id": 20,
-      "type": "Sora2QueryTasks",
-      "pos": [
-        537.0318022490567,
-        306.45228904848574
-      ],
-      "size": [
-        287.3755859375,
-        58
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 4,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "report",
-          "type": "STRING",
-          "links": [
-            14
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Sora2QueryTasks"
-      },
-      "widgets_values": [
-        ""
-      ]
     }
   ],
   "links": [
     [
-      14,
+      18,
+      39,
+      0,
+      7,
+      0,
+      "*"
+    ],
+    [
+      19,
+      16,
+      0,
+      39,
+      0,
+      "IMAGE"
+    ],
+    [
       20,
+      40,
       0,
       10,
       0,
       "*"
     ],
     [
-      15,
       21,
+      41,
+      0,
+      40,
+      0,
+      "STRING"
+    ],
+    [
+      22,
+      41,
+      0,
+      39,
+      1,
+      "STRING"
+    ],
+    [
+      23,
+      42,
       0,
       22,
       0,
       "VIDEO"
     ],
     [
-      16,
-      21,
+      24,
+      42,
       1,
       23,
-      0,
-      "*"
-    ],
-    [
-      17,
-      38,
-      0,
-      7,
       0,
       "*"
     ]
@@ -463,10 +542,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.740024994425824,
+      "scale": 0.8140274938684066,
       "offset": [
-        -354.3835565613943,
-        98.26073753592247
+        19.82443680249191,
+        234.78529808801804
       ]
     },
     "frontendVersion": "1.28.5"

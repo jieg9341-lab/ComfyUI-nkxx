@@ -1,0 +1,654 @@
+{
+  "id": "a062c61b-5c62-44e3-9685-31c1ee1d6ef7",
+  "revision": 0,
+  "last_node_id": 16,
+  "last_link_id": 13,
+  "nodes": [
+    {
+      "id": 6,
+      "type": "VeoQueryTasks",
+      "pos": [
+        -2122.0045699517955,
+        -1052.7055704584477
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VeoQueryTasks"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 7,
+      "type": "easy showAnything",
+      "pos": [
+        -1894.1615699517895,
+        -1049.7410704584474
+      ],
+      "size": [
+        278.0180216763631,
+        126.12585292236611
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "--- Veo 任务队列 (Wujiai) ---\n[Failed] (veo_3_1-fast) : 两人在大街上战斗...\n[Succeeded] (veo_3_1-fast) : 两人在大街上战斗...\n[Downloaded] (veo_3_1-fast) : 两人在大街上战斗...\n[Failed] (veo_3_1-fast) : 走到镜头前打招呼...\n[Failed] (veo_3_1-fast-4K) : 走到镜头前打招呼...\n[Failed] (veo_3_1-fast-4K) : 走到镜头前打招呼...\n[Failed] (veo_3_1-fast) : 走到镜头前打招呼..."
+      ]
+    },
+    {
+      "id": 13,
+      "type": "VeoGetNextVideo",
+      "pos": [
+        -1551.4491244777016,
+        -1039.0961261320367
+      ],
+      "size": [
+        190.5708984375,
+        46
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VeoGetNextVideo"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "easy showAnything",
+      "pos": [
+        -1550.6794748308002,
+        -922.2994768274449
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "下载成功: veo_video_c2_7ce2.mp4"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "easy showAnything",
+      "pos": [
+        -1670.467313988347,
+        -1416.8716672005035
+      ],
+      "size": [
+        210,
+        108.6094999999998
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.3",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "Veo 任务提交成功!\n模型: veo_3_1-fast\nID: video_6e02a1e8-0013-4561-924a-9c2a5dbdaace"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "LoadImage",
+      "pos": [
+        -2879.450687061416,
+        -1121.3940465761912
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00002_ (2).png",
+        "image"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "LoadImage",
+      "pos": [
+        -2899.591137061416,
+        -1566.1997265761906
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00615_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        -2495.5642782740574,
+        -1548.6653205184084
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00016_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "VeoSubmitTask",
+      "pos": [
+        -2108.1569509080487,
+        -1438.539760671701
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 13
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 12
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VeoSubmitTask"
+      },
+      "widgets_values": [
+        "两人在大街上战斗",
+        "veo_3_1-fast",
+        "16:9",
+        ""
+      ]
+    },
+    {
+      "id": 16,
+      "type": "ApiKeyManager",
+      "pos": [
+        -2130,
+        -1720
+      ],
+      "size": [
+        340,
+        150
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ApiKeyManager"
+      },
+      "widgets_values": [
+        3,
+        "",
+        "限时特价分组",
+        "",
+        "default分组",
+        "",
+        "逆向分组",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 10,
+      "type": "SaveVideo",
+      "pos": [
+        -1316.0409918353434,
+        -1042.6799352910834
+      ],
+      "size": [
+        390,
+        340
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 10
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        -2416.071474830798,
+        -995.5044768274455
+      ],
+      "size": [
+        210,
+        106
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "title": "开关",
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 8,
+      "type": "PrimitiveString",
+      "pos": [
+        -2465.6904703337927,
+        -1167.491329414446
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            8,
+            9
+          ]
+        }
+      ],
+      "title": "API key",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.62",
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      2,
+      1,
+      0,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      4,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      5,
+      6,
+      0,
+      7,
+      0,
+      "*"
+    ],
+    [
+      8,
+      8,
+      0,
+      4,
+      3,
+      "STRING"
+    ],
+    [
+      9,
+      8,
+      0,
+      6,
+      0,
+      "STRING"
+    ],
+    [
+      10,
+      13,
+      0,
+      10,
+      0,
+      "VIDEO"
+    ],
+    [
+      11,
+      13,
+      1,
+      11,
+      0,
+      "*"
+    ],
+    [
+      12,
+      14,
+      0,
+      4,
+      2,
+      "IMAGE"
+    ],
+    [
+      13,
+      15,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "veo查询任务状态",
+      "bounding": [
+        -2130,
+        -1140,
+        519.4551424125009,
+        350.99856347740047
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "无极ai veo提交任务",
+      "bounding": [
+        -2130,
+        -1540,
+        698.0541159269997,
+        377.3352551180001
+      ],
+      "color": "#8AA",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "下载下一个视频",
+      "bounding": [
+        -1580,
+        -1130,
+        710,
+        450
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.751314800901578,
+      "offset": [
+        3085.8397295856375,
+        1923.0242812139882
+      ]
+    },
+    "frontendVersion": "1.30.6"
+  },
+  "version": 0.4
+}

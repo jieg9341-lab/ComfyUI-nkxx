@@ -1,0 +1,760 @@
+{
+  "id": "16702238-785b-4868-bdb1-b5e654e4cb6c",
+  "revision": 0,
+  "last_node_id": 22,
+  "last_link_id": 25,
+  "nodes": [
+    {
+      "id": 3,
+      "type": "SaveImage",
+      "pos": [
+        -300,
+        350
+      ],
+      "size": [
+        270,
+        270
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 18
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "SaveImage",
+      "pos": [
+        280,
+        920
+      ],
+      "size": [
+        270,
+        270
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 12
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "easy showAnything",
+      "pos": [
+        -340,
+        930
+      ],
+      "size": [
+        210,
+        110
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.4",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "任务提交成功 | 任务24 | 模型: gemini-3.1-flash-image-preview | 子任务数: 1"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "easy showAnything",
+      "pos": [
+        -40,
+        1080
+      ],
+      "size": [
+        310,
+        150
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.4",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "--- 通用异步任务队列 ---\n[已下载] 任务24 (将动漫人物转换成真人，在街上逛...) | gemini-3.1-flash-image-preview | 1个子任务\n[失败] 任务23 (将动漫人物转换成真人，在街上逛...) | gemini-3.1-flash-image-preview | 1个子任务 (成: 0 | 败: 1)\n[已下载] 任务22 (批量文件: wujiai_ge...) | gemini-3.1-flash-image-preview | 2个子任务\n[已下载] 任务21 (批量文件: wujiai_ge...) | gemini-3.1-flash-image-preview | 2个子任务\n[已下载] 任务20 (少女和怪兽战斗) | doubao-seedream-5-0-260128 | 1个子任务\n[已下载] 任务19 (少女和怪兽战斗) | doubao-seedream-5-0-260128 | 1个子任务\n[已下载] 任务18 (少女和怪兽战斗) | doubao-seedream-5-0-260128 | 1个子任务\n[已下载] 任务17 (少女和怪兽战) | doubao-seedream-5-0-260128 | 1个子任务\n[已下载] 任务16 (少女和怪兽战) | doubao-seedream-4-5-251128 | 2个子任务\n[已下载] 任务15 (少女和怪兽战斗首尾帧) | doubao-seedream-4-0-250828 | 2个子任务\n[已下载] 任务14 (我的世界游戏，两个人变成我的世...) | gemini-3.1-flash-image-preview | 1个子任务\n[已下载] 任务13 (我的世界游戏，两个人变成我的世...) | gemini-3.1-flash-image-preview | 1个子任务\n[失败] 任务12 (我的世界游戏，两个人变成我的世...) | gemini-3.1-flash-image-preview | 1个子任务 (成: 0 | 败: 1)\n[已下载] 任务11 (我的世界游戏，两个人变成我的世...) | gemini-3.1-flash-image-preview | 2个子任务\n[已下载] 任务10 (两个人握手言和.) | gemini-2.5-flash-image | 1个子任务\n[已下载] 任务9 (两个人握手言和.) | gemini-2.5-flash-image | 1个子任务\n[已下载] 任务8 (两个人握手言和.) | gemini-2.5-flash-image | 1个子任务\n[已下载] 任务7 (两个人握手言和.) | gemini-2.5-flash-image | 1个子任务\n[已下载] 任务6 (两个人握手言和.) | gemini-2.5-flash-image | 2个子任务 (成: 1 | 败: 1)\n[已下载] 任务5 (两个人握手言和) | gemini-2.5-flash-image | 2个子任务\n[已下载] 任务4 (两个人握手言和) | gemini-2.5-flash-image | 2个子任务\n[失败] 任务3 (两个人握手言和) | gemini-2.5-flash-image | 3个子任务 (成: 0 | 败: 3)\n[已下载] 任务2 (两个人握手言和) | gemini-2.5-flash-image | 1个子任务\n[失败] 任务1 (两个人握手言和) | gemini-2.5-flash-image | 2个子任务 (成: 0 | 败: 2)"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "LoadImage",
+      "pos": [
+        -1730,
+        550
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            16
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00044_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "UniversalAsyncQueryWujiai",
+      "pos": [
+        -30,
+        930
+      ],
+      "size": [
+        289.980078125,
+        102
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UniversalAsyncQueryWujiai"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 8,
+      "type": "LoadImage",
+      "pos": [
+        -1420,
+        550
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            14
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ComfyUI_00041_.png",
+        "image"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "DynamicImageList",
+      "pos": [
+        -1100,
+        450
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_1",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "name": "image_2",
+          "type": "IMAGE",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "图像列表 (IMAGE)",
+          "type": "IMAGE",
+          "links": [
+            19,
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DynamicImageList"
+      },
+      "widgets_values": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "type": "easy showAnything",
+      "pos": [
+        -760,
+        670
+      ],
+      "size": [
+        380,
+        110
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.4",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "gemini-3.1-flash-image-preview | 成功生成: 1 张"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "UniversalAsyncSubmitWujiai",
+      "pos": [
+        -760,
+        940
+      ],
+      "size": [
+        400,
+        208
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "images",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UniversalAsyncSubmitWujiai"
+      },
+      "widgets_values": [
+        "gemini-3.1-flash-image-preview",
+        "将动漫人物转换成真人，在街上逛街",
+        "16:9",
+        "2K",
+        "disabled",
+        1,
+        1,
+        1,
+        ""
+      ]
+    },
+    {
+      "id": 11,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        -1030,
+        880
+      ],
+      "size": [
+        210,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 20,
+      "type": "WujiaiModelBrowser",
+      "pos": [
+        80,
+        400
+      ],
+      "size": [
+        390,
+        374
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "WujiaiModelBrowser"
+      },
+      "widgets_values": [
+        "节点使用的api：wujiai.org/register?aff=vW2s\n              nkxx.grsai.ai              \n关注B站那颗星星188，获取作者最新动态^-^\n下方列表用于便捷复制模型名字到节点内\n━━━━━━━━━━━━━━━━━━━━━━━━━\ngemini-3.1-flash-image-preview\ngemini-3-pro-image-preview\ngemini-2.5-flash-image\ndoubao-seedream-5-0-260128\ndoubao-seedream-4-5-251128\ndoubao-seedream-4-0-250828\ngpt-image-1.5-all\ngrok-4.2-image\ngrok-4.1-image",
+        "图像模型"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "UniversalSyncGeneratorWujiai",
+      "pos": [
+        -760,
+        350
+      ],
+      "size": [
+        400,
+        228
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 19
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            18
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UniversalSyncGeneratorWujiai"
+      },
+      "widgets_values": [
+        "gemini-3.1-flash-image-preview",
+        "两个人物穿越到GTA5游戏世界中",
+        "16:9",
+        "1K",
+        "disabled",
+        15,
+        1,
+        1,
+        ""
+      ]
+    },
+    {
+      "id": 22,
+      "type": "PrimitiveString",
+      "pos": [
+        -1090,
+        760
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            23,
+            24,
+            25
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 21,
+      "type": "ApiKeyManager",
+      "pos": [
+        -1150,
+        1070
+      ],
+      "size": [
+        340,
+        150
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ApiKeyManager"
+      },
+      "widgets_values": [
+        3,
+        "",
+        "特价令牌",
+        "",
+        "default令牌",
+        "",
+        "优质Gemini",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      12,
+      14,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      13,
+      14,
+      1,
+      16,
+      0,
+      "*"
+    ],
+    [
+      14,
+      8,
+      0,
+      5,
+      0,
+      "IMAGE"
+    ],
+    [
+      16,
+      7,
+      0,
+      5,
+      1,
+      "IMAGE"
+    ],
+    [
+      18,
+      18,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      19,
+      5,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      20,
+      18,
+      1,
+      4,
+      0,
+      "*"
+    ],
+    [
+      21,
+      19,
+      0,
+      13,
+      0,
+      "*"
+    ],
+    [
+      22,
+      5,
+      0,
+      19,
+      0,
+      "IMAGE"
+    ],
+    [
+      23,
+      22,
+      0,
+      18,
+      1,
+      "STRING"
+    ],
+    [
+      24,
+      22,
+      0,
+      19,
+      1,
+      "STRING"
+    ],
+    [
+      25,
+      22,
+      0,
+      14,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "万能生图节点",
+      "bounding": [
+        -780,
+        270,
+        820,
+        550
+      ],
+      "color": "#8AA",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "万能生图节点（异步）",
+      "bounding": [
+        -780,
+        840,
+        720,
+        400
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "查询并下载结果",
+      "bounding": [
+        -50,
+        840,
+        640,
+        400
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5422314049586912,
+      "offset": [
+        1900.479985504199,
+        13.380450376318322
+      ]
+    },
+    "frontendVersion": "1.30.6"
+  },
+  "version": 0.4
+}

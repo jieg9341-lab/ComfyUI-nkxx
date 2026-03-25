@@ -1,0 +1,504 @@
+{
+  "id": "796950c9-f73f-40ee-95d8-16e8a105b08f",
+  "revision": 0,
+  "last_node_id": 11,
+  "last_link_id": 7,
+  "nodes": [
+    {
+      "id": 6,
+      "type": "WujiaiSora2QueryTasks",
+      "pos": [
+        240,
+        870
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "WujiaiSora2QueryTasks"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 10,
+      "type": "SaveVideo",
+      "pos": [
+        1240,
+        870
+      ],
+      "size": [
+        270,
+        588.9090909090909
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ComfyUI",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "WujiaiSora2GetNextVideo",
+      "pos": [
+        990,
+        870
+      ],
+      "size": [
+        203.7916015625,
+        46
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "WujiaiSora2GetNextVideo"
+      }
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        230,
+        310
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "微信图片_20260313103414_978_499.png",
+        "image"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "WujiaiSora2SubmitTask",
+      "pos": [
+        530,
+        360
+      ],
+      "size": [
+        400,
+        232
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "name": "api_key",
+          "shape": 7,
+          "type": "STRING",
+          "widget": {
+            "name": "api_key"
+          },
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "response",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "WujiaiSora2SubmitTask"
+      },
+      "widgets_values": [
+        "第一人称视角，跑到面前撒娇",
+        "sora-2-all",
+        "9:16",
+        "10",
+        "small",
+        false,
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "type": "easy showAnything",
+      "pos": [
+        1000,
+        360
+      ],
+      "size": [
+        250,
+        140
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.4",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "Sora2 任务提交成功!\n模型: sora-2-all\nID: sora-2:1fd506a8-c1d9-4ed2-8a93-a65b42eba229\n请使用 '查询任务状态' 节点刷新。"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        -140,
+        510
+      ],
+      "size": [
+        290,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "",
+        "showNav": true,
+        "showAllGraphs": true,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "max one"
+      }
+    },
+    {
+      "id": 11,
+      "type": "easy showAnything",
+      "pos": [
+        1010,
+        990
+      ],
+      "size": [
+        210,
+        130
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.4",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "下载成功: wujiai_sora2_sora-2:1_4d8d.mp4"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "easy showAnything",
+      "pos": [
+        550,
+        880
+      ],
+      "size": [
+        350,
+        170
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "1.3.4",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "--- Wujiai Sora2 任务队列 ---\n[succeeded] (sora-2-all) sora-2:1... : 第一人称视角，跑到面前撒娇..."
+      ]
+    },
+    {
+      "id": 9,
+      "type": "PrimitiveString",
+      "pos": [
+        -80,
+        680
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            4,
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.75",
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      1,
+      0,
+      3,
+      0,
+      "*"
+    ],
+    [
+      3,
+      6,
+      0,
+      7,
+      0,
+      "*"
+    ],
+    [
+      4,
+      9,
+      0,
+      1,
+      1,
+      "STRING"
+    ],
+    [
+      5,
+      9,
+      0,
+      6,
+      0,
+      "STRING"
+    ],
+    [
+      6,
+      8,
+      0,
+      10,
+      0,
+      "VIDEO"
+    ],
+    [
+      7,
+      8,
+      1,
+      11,
+      0,
+      "*"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "sora2提交任务",
+      "bounding": [
+        220,
+        190,
+        1130,
+        580
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "sora2查询任务",
+      "bounding": [
+        220,
+        790,
+        720,
+        440
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "下载视频（查询分组任务状态为succeeded才可下载）",
+      "bounding": [
+        970,
+        790,
+        690,
+        730
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9090909090909098,
+      "offset": [
+        425.32608099962414,
+        -173.1256276761834
+      ]
+    },
+    "frontendVersion": "1.30.6"
+  },
+  "version": 0.4
+}
